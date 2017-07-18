@@ -1,31 +1,50 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
+  Dimensions,
   StyleSheet,
   Text,
+  TouchableHighlight,
+  Button,
   View
 } from 'react-native';
+import _ from 'lodash';
+import ShowResults from './android/components/ShowResults';
+import BarcodeScanner from './android/components/BarcodeScanner';
 
 export default class ProductGuardian extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showCamera: false
+    };
+    this.closeCamera = this.closeCamera.bind(this);
+  }
+
+  switchToCamera() {
+    this.setState({'showCamera': true});
+  }
+
+  closeCamera() {
+    this.setState({'showCamera': false});
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+          Welcome to ProductGuardian!
         </Text>
         <Text style={styles.instructions}>
-          To get started, edit index.android.js
+          To get started, click the "Scan Items" button
         </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+        <Button
+          onPress={() => {this.switchToCamera()}}
+          title="Scan Items"
+          color="#841584"
+          accessibilityLabel="Scan items for possible product sensitivities"
+        />
+        {this.state.showCamera ? <BarcodeScanner closeCamera={this.closeCamera}/> : null}
       </View>
     );
   }
