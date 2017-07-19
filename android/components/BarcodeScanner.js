@@ -9,19 +9,26 @@ import {
 } from 'react-native';
 import Camera from 'react-native-camera';
 import _ from 'lodash';
-import ShowResults from './ShowResults.js';
+import Warning from './Warning';
+import GreenLight from './GreenLight';
 
 export default class BarcodeScanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showWarning: false,
+      showGreenLight: false
     };
-    this.revertCamera = this.revertCamera.bind(this);
+    this.hideWarning = this.hideWarning.bind(this);
+    this.hideGreenLight = this.hideGreenLight.bind(this);
   }
 
-  revertCamera() {
-    this.setState({showModal: false});
+  hideWarning() {
+    this.setState({showWarning: false});
+  }
+
+  hideGreenLight() {
+    this.setState({showGreenLight: false});
   }
 
   render() {
@@ -35,8 +42,13 @@ export default class BarcodeScanner extends Component {
           aspect={Camera.constants.Aspect.fill}
           playSoundOnCapture={true}
           onBarCodeRead={_.once((event) => {
-            this.setState({showModal: true});
-            console.log('state changed');
+            if (event.data.toString() === '0042272009244') {
+              console.log('Amy\'s Pad Thai -- UPC = ', event.data);
+              this.setState({showGreenLight: true});
+            } else if (event.data.toString() === '0013562300921') {
+              console.log('Annie\'s Mac & Cheese -- UPC = ', event.data);
+              this.setState({showWarning: true});
+            }
           }
           /*_.throttle((event) => {
             var that = this;
@@ -48,7 +60,8 @@ export default class BarcodeScanner extends Component {
           }, 15000)*/)}>
           <Text style={styles.capture} onPress={this.props.closeCamera}>Click to close the camera</Text>
         </Camera>
-        {this.state.showModal ? <ShowResults style={{backgroundColor: 'red'}} revertCamera={this.revertCamera}/> : null}
+        {this.state.showWarning ? <Warning revertCamera={this.hideWarning}/> : null}
+        {this.state.showGreenLight ? <GreenLight revertCamera={this.hideGreenLight}/> : null}
       </View>
     );
   }
