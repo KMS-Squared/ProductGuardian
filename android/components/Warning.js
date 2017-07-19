@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Text, TouchableHighlight, StyleSheet, View } from 'react-native';
 
-export default class ShowResults extends Component {
+export default class Warning extends Component {
   constructor(props) {
     super(props);
     this.state = {
