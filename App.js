@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 import BarcodeScanner from './android/components/BarcodeScanner';
+import Profile from './android/components/Profile';
 import { TabNavigator } from 'react-navigation';
 
 class HomeScreen extends React.Component {
@@ -37,7 +38,8 @@ class HomeScreen extends React.Component {
 
 const ProductGuardian = TabNavigator({
   Home: { screen: HomeScreen },
-  Camera: {screen: BarcodeScanner}
+  Camera: {screen: BarcodeScanner},
+  Profile: {screen: Profile}
 });
 
 const styles = StyleSheet.create({

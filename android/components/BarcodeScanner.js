@@ -48,6 +48,8 @@ export default class BarcodeScanner extends Component {
             } else if (event.data.toString() === '0013562300921') {
               console.log('Annie\'s Mac & Cheese -- UPC = ', event.data);
               this.setState({showWarning: true});
+            } else {
+              this.setState({showWarning: true});
             }
           }
           /*_.throttle((event) => {
