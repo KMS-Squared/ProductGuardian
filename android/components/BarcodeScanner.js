@@ -60,7 +60,6 @@ export default class BarcodeScanner extends Component {
               console.log('=======', that.state.showModal);
             })
           }, 15000)*/)}>
-          <Text style={styles.capture} onPress={this.props.closeCamera}>Click to close the camera</Text>
         </Camera>
         {this.state.showWarning ? <Warning revertCamera={this.hideWarning}/> : null}
         {this.state.showGreenLight ? <GreenLight revertCamera={this.hideGreenLight}/> : null}

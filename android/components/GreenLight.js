@@ -25,8 +25,8 @@ export default class GreenLight extends Component {
           >
          <View style={styles.popup}>
           <View>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 30, fontWeight: 'bold'}}>Hooray!</Text>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 30}}>Looks like this product does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 25, fontWeight: 'bold'}}>Hooray!</Text>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 25}}>Looks like this product does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
 
             <TouchableHighlight style={{backgroundColor: 'grey', width: 200, borderRadius: 20}}onPress={() => {
               this.setModalVisible(false);
@@ -49,8 +49,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'green',
     borderColor: '#d6d7da',
     borderWidth: 3,
-    height: 300,
-    width: 300,
+    height: 250,
+    width: 250,
     borderRadius: 20,
     justifyContent: 'center',
     overflow: 'visible'
