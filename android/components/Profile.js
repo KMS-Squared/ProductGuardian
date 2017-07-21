@@ -10,11 +10,11 @@ import {
 
 let Form = t.form.Form;
 let User = t.struct({
-  username: t.String,
+  // username: t.String,
   first_name: t.String,
   last_name: t.String,
   avoidables: t.String,
-  password: t.String
+  // password: t.String
 });
 
 export default class Profile extends React.Component {
