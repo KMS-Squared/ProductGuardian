@@ -24,14 +24,9 @@ class HomeScreen extends React.Component {
               Welcome to ProductGuardian!
               </Text>
               <Text style={styles.instructions}>
-                To get started, click the "Scan Items" button
+                To get started, open the camera and begin scanning product barcodes.
               </Text>
-              <Button
-                onPress={() => navigate('Camera')}
-                title="Scan Items"
-                color="#841584"
-                accessibilityLabel="Scan items for possible product sensitivities"
-              />
+
         </View>);
   }
 }
@@ -40,7 +35,10 @@ const ProductGuardian = TabNavigator({
   Home: { screen: HomeScreen },
   Camera: {screen: BarcodeScanner},
   Profile: {screen: Profile}
-});
+  },
+  {
+    tabBarPosition: 'bottom'
+  });
 
 const styles = StyleSheet.create({
   container: {
@@ -59,6 +57,9 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  disclaimer: {
+    fontSize: 10
+  }
 });
 
 AppRegistry.registerComponent('ProductGuardian', () => ProductGuardian);

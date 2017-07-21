@@ -61,8 +61,8 @@ export default class BarcodeScanner extends Component {
             })
           }, 15000)*/)}>
         </Camera>
-        {this.state.showWarning ? <Warning revertCamera={this.hideWarning}/> : null}
-        {this.state.showGreenLight ? <GreenLight revertCamera={this.hideGreenLight}/> : null}
+        {this.state.showWarning ? <Warning revertCamera={this.hideWarning} style={styles.popup}/> : null}
+        {this.state.showGreenLight ? <GreenLight revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
       </View>
     );
   }
@@ -80,6 +80,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
+
   },
   preview: {
     flex: 1,
@@ -93,6 +95,10 @@ const styles = StyleSheet.create({
     color: '#000',
     padding: 10,
     margin: 40
+  },
+  popup: {
+    alignSelf: 'center',
+    aspectRatio: 75
   }
 });
 

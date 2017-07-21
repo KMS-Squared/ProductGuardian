@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Text, TouchableHighlight, StyleSheet, View } from 'react-native';
+import { Modal, Text, TouchableHighlight, StyleSheet, View, Button } from 'react-native';
 
 export default class Warning extends Component {
   constructor(props) {
@@ -21,19 +21,20 @@ export default class Warning extends Component {
           animationType={"slide"}
           transparent={true}
           visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
           >
          <View style={styles.popup}>
           <View>
             <Text style={{color: 'white', textAlign: 'center', fontSize: 25, fontWeight: 'bold'}}>Warning!</Text>
             <Text style={{color: 'white', textAlign: 'center', fontSize: 25}}>This food contains ingredients that you may want to avoid!</Text>
 
-            <TouchableHighlight style={{backgroundColor: 'grey', width: 200, borderRadius: 20}}onPress={() => {
+            <Button
+              color='grey'
+              title='Hide Alert'
+              onPress={() => {
               this.setModalVisible(false);
               this.props.revertCamera();
-            }}>
-              <Text style={{textAlign: 'center'}}>Hide Alert</Text>
-            </TouchableHighlight>
+            }}/>
+
 
           </View>
          </View>
@@ -46,13 +47,12 @@ export default class Warning extends Component {
 
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor: 'crimson',
+    backgroundColor:'rgba(204,0,0, 0.8)',
     borderColor: '#d6d7da',
     borderWidth: 3,
-    height: 250,
-    width: 250,
     borderRadius: 20,
     justifyContent: 'center',
-    overflow: 'visible'
+    overflow: 'visible',
+    flex: 1
   }
 });
