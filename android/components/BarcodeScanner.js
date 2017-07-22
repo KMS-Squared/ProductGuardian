@@ -17,7 +17,9 @@ export default class BarcodeScanner extends Component {
     super(props);
     this.state = {
       showWarning: false,
-      showGreenLight: false
+      showGreenLight: false,
+      //Use once to make sure that the API is only called one scan at a time
+      readBarCode: _.once(this.scanBarCode.bind(this))
     };
     this.hideWarning = this.hideWarning.bind(this);
     this.hideGreenLight = this.hideGreenLight.bind(this);
@@ -25,10 +27,29 @@ export default class BarcodeScanner extends Component {
 
   hideWarning() {
     this.setState({showWarning: false});
+    //Reset the readBarCode state so that it can be triggered for a new scan
+    this.setState({readBarCode: _.once(this.scanBarCode.bind(this))});
   }
 
   hideGreenLight() {
     this.setState({showGreenLight: false});
+    //Reset the readBarCode state so that it can be triggered for a new scan
+    this.setState({readBarCode: _.once(this.scanBarCode.bind(this))});
+  }
+
+  scanBarCode(event) {
+    fetch('http://ec2-13-59-47-157.us-east-2.compute.amazonaws.com:8080/test').then(function(data) {
+      data.text().then(function(text) {
+        console.log(text);
+        // if (text === 'OK') {
+        //   this.setState({showGreenLight: true});
+        // } else if (text === 'DANGER') {
+        //   this.setState({showWarning: true});
+        // } else {
+        //   console.log('Item not found');
+        // }
+      });
+    });
   }
 
   render() {
@@ -41,25 +62,7 @@ export default class BarcodeScanner extends Component {
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
           playSoundOnCapture={true}
-          onBarCodeRead={_.once((event) => {
-            if (event.data.toString() === '0042272009244') {
-              console.log('Amy\'s Pad Thai -- UPC = ', event.data);
-              this.setState({showGreenLight: true});
-            } else if (event.data.toString() === '0013562300921') {
-              console.log('Annie\'s Mac & Cheese -- UPC = ', event.data);
-              this.setState({showWarning: true});
-            } else {
-              this.setState({showWarning: true});
-            }
-          }
-          /*_.throttle((event) => {
-            var that = this;
-            fetch('https://api.upcitemdb.com/prod/trial/lookup?upc=' + event.data)
-              .then(function(response) {
-              that.setState({showModal: true});
-              console.log('=======', that.state.showModal);
-            })
-          }, 15000)*/)}>
+          onBarCodeRead={(event) => {this.state.readBarCode(event)}}>
         </Camera>
         {this.state.showWarning ? <Warning revertCamera={this.hideWarning} style={styles.popup}/> : null}
         {this.state.showGreenLight ? <GreenLight revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
@@ -67,13 +70,13 @@ export default class BarcodeScanner extends Component {
     );
   }
 
-  takePicture() {
-    const options = {};
-    //options.location = ...
-    this.camera.capture({metadata: options})
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
-  }
+  // takePicture() {
+  //   const options = {};
+  //   //options.location = ...
+  //   this.camera.capture({metadata: options})
+  //     .then((data) => console.log(data))
+  //     .catch(err => console.error(err));
+  // }
 }
 
 const styles = StyleSheet.create({

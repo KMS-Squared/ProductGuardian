@@ -21,6 +21,7 @@ export default class Warning extends Component {
           animationType={"slide"}
           transparent={true}
           visible={this.state.modalVisible}
+          onRequestClose={() => {console.log('modal closed')}}
           >
          <View style={styles.popup}>
           <View>
