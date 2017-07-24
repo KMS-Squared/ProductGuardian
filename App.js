@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   AppRegistry,
+  AsyncStorage,
   Dimensions,
   StyleSheet,
   Text,
@@ -27,8 +28,7 @@ class HomeScreen extends React.Component {
               <Text style={styles.instructions}>
                 To get started, open the camera and begin scanning product barcodes.
               </Text>
-
-        </View>);
+            </View>);
   }
 }
 
@@ -36,7 +36,7 @@ const ProductGuardian = TabNavigator({
   Home: { screen: HomeScreen },
   Camera: {screen: BarcodeScanner},
   Profile: {screen: Profile}
-  },{
+  }, {
     tabBarPosition: 'bottom'
   });
 
