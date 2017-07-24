@@ -16,7 +16,7 @@ import Profile from './android/components/Profile';
 import GreenLight from './android/components/GreenLight';
 import { TabNavigator } from 'react-navigation';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -43,15 +43,22 @@ class HomeScreen extends React.Component {
                 To get started, open the camera and begin scanning product barcodes.
               </Text>
 
-              <ActionButton buttonColor="rgba(231,76,60,1)">
-                <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
-                  <Icon name="md-create" style={styles.actionButtonIcon} />
+              <ActionButton buttonColor="rgba(231,76,60,1)"
+                icon={
+                  <Iionicons name="md-more" style={styles.actionButtonIcon} />
+                }
+                offsetX={15}
+                offsetY={5}
+                degrees={90}
+                >
+                <ActionButton.Item buttonColor='#3498db' title="Profile" onPress={() => {}}>
+                  <Iionicons name="user" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {}}>
-                  <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
+                <ActionButton.Item buttonColor='#9b59b6' title="Favorites" onPress={() => console.log("notes tapped!")}>
+                  <Iionicons name="md-create" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {}}>
-                  <Icon name="md-search" style={styles.actionButtonIcon} />
+                <ActionButton.Item buttonColor='#1abc9c' title="Quick Search" onPress={() => {}}>
+                  <Iionicons name="md-search" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
               </ActionButton>
         </View>);
