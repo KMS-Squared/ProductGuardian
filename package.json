@@ -16,6 +16,7 @@
     "react-native-auth0": "^1.0.3",
     "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
     "react-native-lock": "^0.6.0",
+    "react-native-vector-icons": "^4.2.0",
     "react-navigation": "^1.0.0-beta.11",
     "tcomb-form-native": "^0.6.9"
   },
