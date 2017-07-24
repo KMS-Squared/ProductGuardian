@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.auth0.lock.react.LockReactPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 import com.auth0.react.A0Auth0Package;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.facebook.react.ReactNativeHost;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new LockReactPackage(),
+            new VectorIconsPackage(),
             new A0Auth0Package(),
             new RCTCameraPackage()
       );
