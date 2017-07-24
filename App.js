@@ -103,5 +103,3 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('ProductGuardian', () => ProductGuardian);
-
-
