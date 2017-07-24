@@ -15,6 +15,8 @@ import BarcodeScanner from './android/components/BarcodeScanner';
 import Profile from './android/components/Profile';
 import GreenLight from './android/components/GreenLight';
 import { TabNavigator } from 'react-navigation';
+import ActionButton from 'react-native-action-button';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
