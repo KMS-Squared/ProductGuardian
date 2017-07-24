@@ -15,8 +15,6 @@ import BarcodeScanner from './android/components/BarcodeScanner';
 import Profile from './android/components/Profile';
 import GreenLight from './android/components/GreenLight';
 import { TabNavigator } from 'react-navigation';
-import ActionButton from 'react-native-action-button';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -42,27 +40,7 @@ class HomeScreen extends React.Component {
               <Text style={styles.instructions}>
                 To get started, open the camera and begin scanning product barcodes.
               </Text>
-
-              <ActionButton buttonColor="rgba(231,76,60,1)"
-                icon={
-                  <Iionicons name="md-more" style={styles.actionButtonIcon} />
-                }
-                offsetX={15}
-                offsetY={5}
-                degrees={90}
-                >
-                <ActionButton.Item buttonColor='#3498db' title="Profile" onPress={() => {}}>
-                  <Iionicons name="user" style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-                <ActionButton.Item buttonColor='#9b59b6' title="Favorites" onPress={() => console.log("notes tapped!")}>
-                  <Iionicons name="md-create" style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-                <ActionButton.Item buttonColor='#1abc9c' title="Quick Search" onPress={() => {}}>
-                  <Iionicons name="md-search" style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-              </ActionButton>
-        </View>);
-
+            </View>);
   }
 }
 
@@ -82,7 +60,7 @@ const styles = StyleSheet.create({
   //   backgroundColor: '#F5FCFF',
   // },
   welcome: {
-    fontSize: 30,
+    fontSize: 35,
     textAlign: 'center',
     color: '#ba0d0d',
     margin: 10,
@@ -94,12 +72,9 @@ const styles = StyleSheet.create({
   },
   disclaimer: {
     fontSize: 10
-  },
-  actionButtonIcon: {
-    fontSize: 20,
-    height: 22,
-    color: 'white',
   }
 });
 
 AppRegistry.registerComponent('ProductGuardian', () => ProductGuardian);
+
+
