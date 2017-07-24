@@ -12,6 +12,7 @@
     "prop-types": "^15.5.10",
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.4",
+    "react-native-action-button": "^2.7.2",
     "react-native-auth0": "^1.0.3",
     "react-native-camera": "git+https://github.com/lwansbrough/react-native-camera.git",
     "react-native-lock": "^0.6.0",
