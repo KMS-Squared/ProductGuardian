@@ -137,11 +137,8 @@ android {
 }
 
 dependencies {
-<<<<<<< HEAD
     compile project(':react-native-lock')
-=======
     compile project(':react-native-vector-icons')
->>>>>>> added floating button
     compile project(':react-native-auth0')
     compile project(':react-native-camera')
     compile fileTree(dir: "libs", include: ["*.jar"])
