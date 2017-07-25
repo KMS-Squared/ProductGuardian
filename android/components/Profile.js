@@ -75,11 +75,11 @@ export default class Profile extends React.Component {
           console.log('modified user', modifiedUser);
         }).catch((error) => {console.log('error modifying profile', error)});
       }).catch((error) => {console.log('error saving profile', error)});
+      this.props.navigation.navigate('Home');
     }
   }
 
   render () {
-    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         {/* display */}
