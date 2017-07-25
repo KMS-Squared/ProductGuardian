@@ -1,5 +1,5 @@
 import React, {component} from 'react';
-import { View, ListView, StyleSheet, Text } from 'react-native';
+import { View, ListView, StyleSheet, Text, Button } from 'react-native';
 
 import Row from './RowFavorites';
 
