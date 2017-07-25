@@ -16,11 +16,13 @@ import GreenLight from './android/components/GreenLight';
 import { TabNavigator } from 'react-navigation';
 import ActionButton from 'react-native-action-button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FAIcons from 'react-native-vector-icons/FontAwesome'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
   };
+
   render() {
     const { navigate } = this.props.navigation;
     return (<View>
@@ -36,17 +38,17 @@ class HomeScreen extends React.Component {
                   <Ionicons name="md-more" style={styles.actionButtonIcon} />
                 }
                 offsetX={15}
-                offsetY={5}
+                offsetY={10}
                 degrees={90}
                 >
-                <ActionButton.Item buttonColor='#3498db' title="Profile" onPress={() => {}}>
-                  <Ionicons name="user" style={styles.actionButtonIcon} />
+                <ActionButton.Item buttonColor='#3498db' title="Profile" onPress={() => navigate('Profile')}>
+                  <FAIcons name="user" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#9b59b6' title="Favorites" onPress={() => console.log("notes tapped!")}>
-                  <Ionicons name="md-create" style={styles.actionButtonIcon} />
+                <ActionButton.Item buttonColor='#9b59b6' title="Favorites" onPress={() => navigate('Camera')}>
+                  <FAIcons name="star" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
                 <ActionButton.Item buttonColor='#1abc9c' title="Quick Search" onPress={() => {}}>
-                  <Ionicons name="md-search" style={styles.actionButtonIcon} />
+                  <FAIcons name="search" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
                 </ActionButton>
 
