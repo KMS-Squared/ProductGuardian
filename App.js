@@ -7,7 +7,6 @@ import {
   Text,
   TouchableHighlight,
   Button,
-  Image,
   View
 } from 'react-native';
 import _ from 'lodash';
@@ -24,18 +23,7 @@ class HomeScreen extends React.Component {
   };
   render() {
     const { navigate } = this.props.navigation;
-    return (<View style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#F5FCFF'
-              }}>
-              <Image source={{
-                uri: 'http://ec2-13-59-47-157.us-east-2.compute.amazonaws.com:8080/assests/PG_logo.png'}}
-                style={{
-                  width: 200,
-                  height: 219
-                }} />
+    return (<View>
               <Text style={styles.welcome}>
               Welcome to ProductGuardian!
               </Text>
@@ -55,16 +43,15 @@ const ProductGuardian = TabNavigator({
   });
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#F5FCFF',
-  // },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
   welcome: {
-    fontSize: 35,
+    fontSize: 20,
     textAlign: 'center',
-    color: '#ba0d0d',
     margin: 10,
   },
   instructions: {
