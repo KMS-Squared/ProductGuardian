@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Text, TouchableHighlight, StyleSheet, View, Button } from 'react-native';
 
-export default class GreenLight extends Component {
+export default class ProductNotFound extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +17,6 @@ export default class GreenLight extends Component {
     return (
       <View >
         <Modal
-
           animationType={"slide"}
           transparent={true}
           visible={this.state.modalVisible}
@@ -25,8 +24,7 @@ export default class GreenLight extends Component {
           >
          <View style={styles.popup}>
           <View>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 25, fontWeight: 'bold'}}>Hooray!</Text>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 25}}>Looks like this product does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 25}}>We're sorry, no information could be found about this product. Please try another item.</Text>
 
             <Button
               color='grey'
@@ -34,13 +32,6 @@ export default class GreenLight extends Component {
               onPress={() => {
               this.setModalVisible(false);
               this.props.revertCamera();
-            }}/>
-
-            <Button
-              color='grey'
-              title="Save product to Favorites"
-              onPress={() => {
-                console.log('Favorites button clicked');
             }}/>
 
           </View>
@@ -54,7 +45,7 @@ export default class GreenLight extends Component {
 
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor:'rgba(0,128,0, 0.8)',
+    backgroundColor:'rgba(51,51,255, 0.8)',
     borderColor: '#d6d7da',
     borderWidth: 3,
     borderRadius: 20,
