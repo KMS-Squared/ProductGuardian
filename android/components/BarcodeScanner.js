@@ -11,6 +11,7 @@ import Camera from 'react-native-camera';
 import _ from 'lodash';
 import Warning from './Warning';
 import GreenLight from './GreenLight';
+import ProductNotFound from './ProductNotFound'
 
 export default class BarcodeScanner extends Component {
   constructor(props) {
@@ -18,11 +19,13 @@ export default class BarcodeScanner extends Component {
     this.state = {
       showWarning: false,
       showGreenLight: false,
+      showProductNotFound: false,
       //Use once to make sure that the API is only called one scan at a time
       readBarCode: _.once(this.scanBarCode.bind(this))
     };
     this.hideWarning = this.hideWarning.bind(this);
     this.hideGreenLight = this.hideGreenLight.bind(this);
+    this.hideProductNotFound = this.hideProductNotFound.bind(this);
   }
 
   hideWarning() {
@@ -37,10 +40,17 @@ export default class BarcodeScanner extends Component {
     this.setState({readBarCode: _.once(this.scanBarCode.bind(this))});
   }
 
+  hideProductNotFound() {
+    this.setState({showProductNotFound: false});
+    //Reset the readBarCode state so that it can be triggered for a new scan
+    this.setState({readBarCode: _.once(this.scanBarCode.bind(this))});
+  }
+
   scanBarCode(event) {
     fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/test').then(function(data) {
       data.text().then(function(text) {
         console.log(text);
+
         // if (text === 'OK') {
         //   this.setState({showGreenLight: true});
         // } else if (text === 'DANGER') {
@@ -50,6 +60,7 @@ export default class BarcodeScanner extends Component {
         // }
       });
     });
+    this.setState({showGreenLight: true});
   }
 
   render() {
@@ -66,6 +77,7 @@ export default class BarcodeScanner extends Component {
         </Camera>
         {this.state.showWarning ? <Warning revertCamera={this.hideWarning} style={styles.popup}/> : null}
         {this.state.showGreenLight ? <GreenLight revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
+        {this.state.showProductNotFound ? <ProductNotFound revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
       </View>
     );
   }
