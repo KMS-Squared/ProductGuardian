@@ -38,7 +38,7 @@ export default class BarcodeScanner extends Component {
   }
 
   scanBarCode(event) {
-    fetch('http://ec2-13-59-47-157.us-east-2.compute.amazonaws.com:8080/test').then(function(data) {
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/test').then(function(data) {
       data.text().then(function(text) {
         console.log(text);
         // if (text === 'OK') {
