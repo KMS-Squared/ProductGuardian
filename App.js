@@ -30,6 +30,27 @@ class HomeScreen extends React.Component {
               <Text style={styles.instructions}>
                 To get started, open the camera and begin scanning product barcodes.
               </Text>
+
+              <ActionButton buttonColor="rgba(231,76,60,1)"
+                icon={
+                  <Ionicons name="md-more" style={styles.actionButtonIcon} />
+                }
+                offsetX={15}
+                offsetY={5}
+                degrees={90}
+                >
+                <ActionButton.Item buttonColor='#3498db' title="Profile" onPress={() => {}}>
+                  <Ionicons name="user" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                <ActionButton.Item buttonColor='#9b59b6' title="Favorites" onPress={() => console.log("notes tapped!")}>
+                  <Ionicons name="md-create" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                <ActionButton.Item buttonColor='#1abc9c' title="Quick Search" onPress={() => {}}>
+                  <Ionicons name="md-search" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                </ActionButton>
+
+
             </View>);
   }
 }
@@ -61,6 +82,11 @@ const styles = StyleSheet.create({
   },
   disclaimer: {
     fontSize: 10
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
   }
 });
 
