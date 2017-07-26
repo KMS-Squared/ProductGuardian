@@ -51,7 +51,7 @@ const ProductGuardian = TabNavigator({
   Home: { screen: HomeScreen },
   Camera: {screen: BarcodeScanner},
   Profile: {screen: Profile},
-  Favorites: {screen: Favorites}
+  Faves: {screen: Favorites}
   }, {
     tabBarPosition: 'bottom'
   });
