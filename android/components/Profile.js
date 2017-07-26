@@ -75,7 +75,7 @@ export default class Profile extends React.Component {
           console.log('modified user', modifiedUser);
         }).catch((error) => {console.log('error modifying profile', error)});
       }).catch((error) => {console.log('error saving profile', error)});
-      this.props.navigation.navigate('Home');
+      this.props.navigation.goBack();
     }
   }
 
