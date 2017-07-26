@@ -36,7 +36,7 @@ export default class Profile extends React.Component {
     AsyncStorage.getItem('userInfo', (err, userInfo) => {
       console.log('user data to be updated', userInfo);
       var user = JSON.parse(userInfo);
-      var avoidables = user.avoidables.join(', ');
+      var avoidables = user.avoidables.join(',');
       this.setState({UserData: {
         first_name: user.first_name,
         last_name: user.last_name,
@@ -73,6 +73,7 @@ export default class Profile extends React.Component {
       }).then((response) => {
         response.json().then((modifiedUser) => {
           console.log('modified user', modifiedUser);
+          AsyncStorage.setItem('userInfo', JSON.stringify(modifiedUser));
         }).catch((error) => {console.log('error modifying profile', error)});
       }).catch((error) => {console.log('error saving profile', error)});
       this.props.navigation.navigate('Home');

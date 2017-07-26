@@ -5,7 +5,8 @@ export default class GreenLight extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: true
+      modalVisible: true,
+      sampleProduct: 'raisins'
     };
   }
 
@@ -15,19 +16,18 @@ export default class GreenLight extends Component {
 
   render() {
     return (
-      <View >
         <Modal
-
           animationType={"slide"}
           transparent={true}
           visible={this.state.modalVisible}
           onRequestClose={() => {console.log('modal closed')}}
           >
          <View style={styles.popup}>
-          <View>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 25, fontWeight: 'bold'}}>Hooray!</Text>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 25}}>Looks like this product does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
 
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>Hooray!</Text>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>Looks like {this.state.sampleProduct} does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
+
+            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <Button
               color='grey'
               title="Hide Alert"
@@ -35,19 +35,17 @@ export default class GreenLight extends Component {
               this.setModalVisible(false);
               this.props.revertCamera();
             }}/>
-
+          {/*This view creates space between the buttons on this popup*/}
+            <View style={{width: 10}}></View>
             <Button
               color='grey'
-              title="Save product to Favorites"
+              title="Save item to Favorites"
               onPress={() => {
                 console.log('Favorites button clicked');
             }}/>
-
-          </View>
+            </View>
          </View>
         </Modal>
-
-      </View>
     );
   }
 }
