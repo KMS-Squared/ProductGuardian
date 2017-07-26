@@ -33,8 +33,8 @@ class HomeScreen extends React.Component {
               }}>
               <Image source={require('./android/app/src/pg_home.png')}
                 style={{
-                  width: 200,
-                  height: 200
+                  width: 220,
+                  height: 144
                 }} />
               <Text style={styles.welcome}>
               Welcome to ProductGuardian!
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 35,
     textAlign: 'center',
-    color: '#ba0d0d',
+    color: '#F89E3A',
     margin: 10,
   },
   instructions: {
