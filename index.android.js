@@ -8,7 +8,6 @@ import {NavigationActions} from "react-navigation";
 import Auth0 from 'react-native-auth0';
 import Key from './config/AuthKey';
 var Auth0Lock = require('react-native-lock');
-
 const auth0 = new Auth0(Key);
 const lock = new Auth0Lock(Key);
 const server = 'http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/';

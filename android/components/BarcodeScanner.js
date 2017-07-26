@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  AsyncStorage,
   Dimensions,
   StyleSheet,
   Text,
@@ -18,25 +17,15 @@ export default class BarcodeScanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      UserId: '',
       showWarning: false,
       showGreenLight: false,
       showProductNotFound: false,
       //Use once to make sure that the API is only called one scan at a time
-      readBarCode: _.once(this.scanBarCode.bind(this)),
-      productInfo: {}
+      readBarCode: _.once(this.scanBarCode.bind(this))
     };
     this.hideWarning = this.hideWarning.bind(this);
     this.hideGreenLight = this.hideGreenLight.bind(this);
     this.hideProductNotFound = this.hideProductNotFound.bind(this);
-  }
-
-  componentDidMount() {
-    AsyncStorage.getItem('userInfo', (err, userInfo) => {
-      var user = JSON.parse(userInfo);
-      //var avoidables = user.avoidables.join(', ');
-      this.setState({UserId: user.user_id});
-    });
   }
 
   hideWarning() {
@@ -58,33 +47,21 @@ export default class BarcodeScanner extends Component {
   }
 
   scanBarCode(event) {
-    console.log('user_id', this.state.UserId);
-    console.log('upc', event.data);
-    var upc;
-    if (event.data.length > 12) {
-      upc = event.data.slice(1, 13);
-      console.log('upc sliced', upc);
-    } else {
-      upc = event.data;
-    }
-    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/status?user_id=${this.state.UserId}&upc=${upc}`).then((data) => {
-      return data.json();
-    }).then((response) => {
-      console.log(response);
-   if (response.status === 'OK') {
-      this.setState({showGreenLight: true});
-      //this.setState({productInfo: response.product});
-    } else if (response.status === 'DANGER') {
-      this.setState({showWarning: true});
-      //this.setState({productInfo: response.product});
-    } else {
-      this.setState({showProductNotFound: true});
-    }
-    }).catch((error) => {console.log(error)});
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/test').then(function(data) {
+      data.text().then(function(text) {
+        console.log(text);
 
+        // if (text === 'OK') {
+        //   this.setState({showGreenLight: true});
+        // } else if (text === 'DANGER') {
+        //   this.setState({showWarning: true});
+        // } else {
+        //   console.log('Item not found');
+        // }
+      });
+    });
+    this.setState({showGreenLight: true});
   }
-
-
 
   render() {
     return (
@@ -98,9 +75,9 @@ export default class BarcodeScanner extends Component {
           playSoundOnCapture={true}
           onBarCodeRead={(event) => {this.state.readBarCode(event)}}>
         </Camera>
-        {this.state.showWarning ? <Warning productInfo={this.state.productInfo} revertCamera={this.hideWarning} style={styles.popup}/> : null}
-        {this.state.showGreenLight ? <GreenLight productInfo={this.state.productInfo} revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
-        {this.state.showProductNotFound ? <ProductNotFound productInfo={this.state.productInfo} revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
+        {this.state.showWarning ? <Warning revertCamera={this.hideWarning} style={styles.popup}/> : null}
+        {this.state.showGreenLight ? <GreenLight revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
+        {this.state.showProductNotFound ? <ProductNotFound revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
       </View>
     );
   }
