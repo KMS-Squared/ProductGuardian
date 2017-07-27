@@ -10,29 +10,27 @@ const mockData = [
   {title: "Dentyne Fire Gum", avoidable: "whey"}];
 
 
-export default class Favorites extends React.Component {
+export default class ShoppingList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      favorites: mockData
+      listItems: mockData
     };
-    this.deleteFavorite = this.deleteFavorite.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
   }
 
-  renderHeader
-
   componentDidMount() {
-    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites')
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shoppingList')
       .then(response => response.json())
-      .then(favorites => {
-        favorites.sort((obj1, obj2) => {
+      .then(listItems => {
+        listItems.sort((obj1, obj2) => {
           obj1.title - obj2.title
         });
       })
-      .then (this.setState({favorites})
+      .then (this.setState({listItems})
       .catch((error) => {
         console.error(error);
       });
@@ -41,19 +39,19 @@ export default class Favorites extends React.Component {
   renderHeader () {
     return (
       <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Add to Shopping List</Text>
-        <Text style={styles.headerText}>Delete</Text>
+        <Text style={styles.headerText}>Shopping List</Text>
+        <Text style={styles.headerText}>Delete All</Text>
       </View>
       );
   }
 
-  deleteFavorite (item) {
+  deleteItem (item) {
         //delete request to server
       //send item title
             //server match item title and send back data again
     //rerender page without item
     // let title = item.title;
-    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/' + {title}), {
+    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shoppingList/' + {title}), {
     //   method: 'DELETE',
     //   headers: {
     //     'Accept': 'application/json',
@@ -76,11 +74,9 @@ export default class Favorites extends React.Component {
 //    const {iconName, iconColor} = item.icon;
     return (
       <View style={styles.row}>
-        <TouchableHighlight onPress={() => console.log('TouchableHighlight')}>
           <Text style={styles.title}>{title}</Text>
-        </TouchableHighlight>
         <View>
-          <Icon color='#F89E3A' name='delete-forever' style={styles.deleteButton} onPress={() => this.deleteFavorite(item)}/>
+          <Icon color='#F89E3A' name='delete-forever' style={styles.deleteButton} onPress={() => this.deleteItem(item)}/>
         </View>
       </View>
     );
@@ -91,7 +87,7 @@ export default class Favorites extends React.Component {
       <View >
         <FlatList
           ListHeaderComponent={this.renderHeader}
-          data={this.state.favorites}
+          data={this.state.listItems}
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
         />
@@ -106,13 +102,13 @@ const styles = StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#339966',
+    backgroundColor: 'F89E3A',
     alignItems: 'center'
   },
   headerText: {
     fontSize: 19,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
     marginLeft: 9,
     paddingLeft: 9,
     paddingRight: 6
