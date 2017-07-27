@@ -36,7 +36,7 @@ class HomeScreen extends React.Component {
                   height: 200
                 }} />
               <Text style={styles.welcome}>
-              Welcome to ProductGuardian!
+              ProductGuardian
               </Text>
               <Text style={styles.instructions}>
                 To get started, open the camera and begin scanning product barcodes.
@@ -98,7 +98,7 @@ const ProductGuardian = TabNavigator({
     showLabel: false,
     tabStyle: {
       padding: 5,
-      width: 200
+      width: Dimensions.get('window').width/2
     }
   },
 });
@@ -145,5 +145,3 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('ProductGuardian', () => SubScreens);
-
-
