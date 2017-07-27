@@ -25,17 +25,17 @@ export default class Favorites extends React.Component {
   renderHeader
 
   componentDidMount() {
-    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites')
-      .then(response => response.json())
-      .then(favorites => {
-        favorites.sort((obj1, obj2) => {
-          obj1.title - obj2.title
-        });
-      })
-      .then (this.setState({favorites})
-      .catch((error) => {
-        console.error(error);
-      });
+    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites')
+    //   .then(response => response.json())
+    //   .then(favorites => {
+    //     favorites.sort((obj1, obj2) => {
+    //       obj1.title - obj2.title
+    //     });
+    //   })
+    //   .then (this.setState({favorites})
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   }
 
   renderHeader () {

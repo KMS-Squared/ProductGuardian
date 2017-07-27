@@ -23,24 +23,24 @@ export default class ShoppingList extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shoppingList')
-      .then(response => response.json())
-      .then(listItems => {
-        listItems.sort((obj1, obj2) => {
-          obj1.title - obj2.title
-        });
-      })
-      .then (this.setState({listItems})
-      .catch((error) => {
-        console.error(error);
-      });
+    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shoppingList')
+    //   .then(response => response.json())
+    //   .then(listItems => {
+    //     listItems.sort((obj1, obj2) => {
+    //       obj1.title - obj2.title
+    //     });
+    //   })
+    //   .then (this.setState({listItems})
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   }
 
   renderHeader () {
     return (
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Shopping List</Text>
-        <Text style={styles.headerText}>Delete All</Text>
+        <Text style={styles.headerText} onPress={() => this.deleteAll()}>Delete All</Text>
       </View>
       );
   }
