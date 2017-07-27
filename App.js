@@ -11,7 +11,8 @@ import {
   View
 } from 'react-native';
 import _ from 'lodash';
-import Favorites from './android/components/Favorites'
+import Favorites from './android/components/Favorites';
+import Shopping from './android/components/ShoppingList'
 import BarcodeScanner from './android/components/BarcodeScanner';
 import Profile from './android/components/Profile';
 import GreenLight from './android/components/GreenLight';
@@ -56,11 +57,11 @@ class HomeScreen extends React.Component {
                 <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => navigate('Profile')}>
                   <FAIcons name="user" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#9b59b6' title="Favorites" onPress={() => navigate('Camera')}>
+                <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites')}>
                   <FAIcons name="star" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#0a86ff' title="Quick Search" onPress={() => {}}>
-                  <FAIcons name="search" style={styles.actionButtonIcon} />
+                <ActionButton.Item buttonColor='#0a86ff' title="Shopping List" onPress={() => navigate('Shopping')}>
+                  <FAIcons name="shopping-cart" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
                 </ActionButton>
 
@@ -115,6 +116,18 @@ const SubScreens = StackNavigator({
     screen: Profile,
     navigationOptions: {
       title: 'Profile',
+    }
+  },
+  Favorites: {
+    screen: Favorites,
+    navigationOptions: {
+      title: 'Favorites',
+    }
+  },
+  Shopping: {
+    screen: Shopping,
+    navigationOptions: {
+      title: 'Shopping',
     }
   },
 }, {
