@@ -27,14 +27,16 @@ class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     return (<View style={{
                 flex: 1,
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 alignItems: 'center',
                 backgroundColor: '#F5FCFF'
               }}>
               <Image source={require('./android/app/src/pg_home.png')}
                 style={{
-                  width: 200,
-                  height: 200
+                  width: 220,
+                  height: 144,
+                  marginBottom: 20,
+                  marginTop: 50
                 }} />
               <Text style={styles.welcome}>
               Welcome to ProductGuardian!
@@ -71,22 +73,20 @@ const ProductGuardian = TabNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      // title: 'Home',
+      tabBarLabel: 'Home',
       tabBarIcon: ({ tintColor }) => (
-      <FAIcons
-        name='home'
-        style={styles.icon}
+      <Image source={require('./android/app/src/home_icon.png')}
+        style={[styles.icon, {tintColor: tintColor}]}
       />
     )}
   },
   Camera: {
     screen: BarcodeScanner,
     navigationOptions: {
-      // title: 'Scan',
+      tabBarLabel: 'Scan',
       tabBarIcon: ({ tintColor }) => (
-      <MCIcons
-        name='barcode-scan'
-        style={styles.icon}
+      <Image source={require('./android/app/src/barcode_scanner.png')}
+        style={[styles.icon, {tintColor: tintColor}]}
       />
     )}
   },
@@ -95,12 +95,13 @@ const ProductGuardian = TabNavigator({
   tabBarOptions: {
     style: {
       backgroundColor: '#339966',
+      padding: 0,
     },
     showIcon: true,
     showLabel: false,
     tabStyle: {
-      padding: 5,
-      width: 200
+      height: 60,
+      width: Dimensions.get('window').width/2
     }
   },
 });
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 35,
     textAlign: 'center',
-    color: '#ba0d0d',
+    color: '#F89E3A',
     margin: 10,
   },
   instructions: {
@@ -142,6 +143,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: 25,
+    width: 25,
     color: 'white'
   }
 });

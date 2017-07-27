@@ -6,8 +6,11 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
+  Dimensions,
   TouchableHighlight
 } from 'react-native';
+import FAIcons from 'react-native-vector-icons/FontAwesome';
 
 let Form = t.form.Form;
 let User = t.struct({
@@ -41,7 +44,8 @@ export default class Profile extends React.Component {
         first_name: user.first_name,
         last_name: user.last_name,
         avoidables: avoidables,
-        user_id: user.user_id
+        user_id: user.user_id,
+        avatar: user.avatar
       }});
       console.log('user state', this.state.UserData);
     });
@@ -81,18 +85,34 @@ export default class Profile extends React.Component {
   }
 
   render () {
+    const link = this.state.UserData.avatar;
     return (
       <View style={styles.container}>
-        {/* display */}
-        <Form
-          ref="form"
-          type={User}
-          value={this.state.UserData}
-          options={this.options}
-        />
-        <TouchableHighlight style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableHighlight>
+        {this.state.UserData.avatar ?
+          <View style={styles.bgContainer}>
+              <Image
+              source={{uri: link}}
+              style={styles.avatarBG}
+              blurRadius={0}>
+              </Image>
+          </View>
+        :
+          <View style={styles.bgContainer}>
+            <Image source={require('../app/src/user_icon.png')}
+                style={styles.avatar2} />
+          </View>
+        }
+        <View style={styles.form}>
+          <Form
+            ref="form"
+            type={User}
+            value={this.state.UserData}
+            options={this.options}
+          />
+          <TouchableHighlight style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
@@ -100,9 +120,31 @@ export default class Profile extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    marginTop: 50,
-    padding: 20,
+    justifyContent: 'flex-start',
+    padding: 30,
+    height: Dimensions.get('window').height,
+    backgroundColor: '#ffffff',
+  },
+  bgContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#F89E3A',
+  },
+  avatarContainer: {
+    backgroundColor: '#ffffff'
+  },
+  form: {
+    marginTop: 210,
+    justifyContent: 'flex-start',
+    alignSelf: 'center',
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 10,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     backgroundColor: '#ffffff',
   },
   title: {
@@ -116,13 +158,35 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+    height: 40,
+    backgroundColor: '#339966',
+    borderColor: '#339966',
     borderWidth: 1,
     borderRadius: 8,
+    marginTop: 10,
     marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
-  }
+  },
+  avatarBG: {
+    width: Dimensions.get('window').width,
+    height: 250,
+    alignSelf: 'center',
+    marginBottom: 20,
+    marginTop: 0,
+    resizeMode: 'cover',
+  },
+  avatar2: {
+    marginTop: 10,
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  avatarName: {
+    color: 'white',
+    fontSize: 30,
+    alignSelf: 'center',
+    marginTop: 30
+  },
 });
