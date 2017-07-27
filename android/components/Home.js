@@ -11,15 +11,13 @@ import {
   View
 } from 'react-native';
 import _ from 'lodash';
-import Favorites from './android/components/Favorites'
 import BarcodeScanner from './android/components/BarcodeScanner';
 import Profile from './android/components/Profile';
 import GreenLight from './android/components/GreenLight';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import ActionButton from 'react-native-action-button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FAIcons from 'react-native-vector-icons/FontAwesome';
-import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FAIcons from 'react-native-vector-icons/FontAwesome'
 
 class HomeScreen extends React.Component {
 
@@ -31,10 +29,11 @@ class HomeScreen extends React.Component {
                 alignItems: 'center',
                 backgroundColor: '#F5FCFF'
               }}>
-              <Image source={require('./android/app/src/pg_home.png')}
+              <Image source={{
+                uri: 'http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/assests/PG_logo.png'}}
                 style={{
                   width: 200,
-                  height: 200
+                  height: 219
                 }} />
               <Text style={styles.welcome}>
               Welcome to ProductGuardian!
@@ -67,40 +66,20 @@ class HomeScreen extends React.Component {
 }
 
 const ProductGuardian = TabNavigator({
-
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      // title: 'Home',
-      tabBarIcon: ({ tintColor }) => (
-      <FAIcons
-        name='home'
-        style={styles.icon}
-      />
-    )}
+      title: 'Home',
+    }
   },
   Camera: {
-    screen: BarcodeScanner,
-    navigationOptions: {
-      // title: 'Scan',
-      tabBarIcon: ({ tintColor }) => (
-      <MCIcons
-        name='barcode-scan'
-        style={styles.icon}
-      />
-    )}
+    screen: BarcodeScanner
   },
 }, {
   tabBarPosition: 'bottom',
   tabBarOptions: {
     style: {
       backgroundColor: '#339966',
-    },
-    showIcon: true,
-    showLabel: false,
-    tabStyle: {
-      padding: 5,
-      width: 200
     }
   },
 });
@@ -108,6 +87,9 @@ const ProductGuardian = TabNavigator({
 const SubScreens = StackNavigator({
   ProductGuardian: {
     screen: ProductGuardian,
+    navigationOptions: {
+      title: 'ProductGuardian',
+    }
   },
   Profile: {
     screen: Profile,
@@ -116,6 +98,7 @@ const SubScreens = StackNavigator({
     }
   },
 }, {
+  mode: 'modal',
   headerMode: 'none',
 });
 
@@ -139,13 +122,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     height: 22,
     color: 'white',
-  },
-  icon: {
-    height: 25,
-    color: 'white'
   }
 });
 
-AppRegistry.registerComponent('ProductGuardian', () => SubScreens);
+AppRegistry.registerComponent('ProductGuardian', () => ProductGuardian);
 
 

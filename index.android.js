@@ -8,9 +8,10 @@ import {NavigationActions} from "react-navigation";
 import Auth0 from 'react-native-auth0';
 import Key from './config/AuthKey';
 var Auth0Lock = require('react-native-lock');
+
 const auth0 = new Auth0(Key);
 const lock = new Auth0Lock(Key);
-const server = 'http://10.0.0.42:8080/';
+const server = 'http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/';
 
 lock.show({}, (err, profile, token) => {
   console.log('profile ', profile);
@@ -42,14 +43,16 @@ lock.show({}, (err, profile, token) => {
             avatar: profile.picture,
           })
         }).then((newUser) => {
-            newUser.json().then((info) => {
-              console.log('new user data ', info);
+            newUser.json().then((userData) => {
+              console.log('new user data ', userData);
+              AsyncStorage.setItem('userInfo', JSON.stringify(userData));
             }).catch((err) => {
               console.log(err);
             });
         });
       } else /*if the user was found in our database */{
         console.log('existing user data ', userData);
+        AsyncStorage.setItem('userInfo', JSON.stringify(userData));
         //Render the home page
       }
     });

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Text, TouchableHighlight, StyleSheet, View, Button } from 'react-native';
 
-export default class GreenLight extends Component {
+export default class ProductNotFound extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,10 +23,7 @@ export default class GreenLight extends Component {
           onRequestClose={() => {console.log('modal closed')}}
           >
          <View style={styles.popup}>
-
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>Hooray!</Text>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>Looks like {this.state.sampleProduct} does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
-
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>We're sorry, no information could be found about {this.state.sampleProduct}. Please try another item.</Text>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <Button
               color='grey'
@@ -34,14 +31,6 @@ export default class GreenLight extends Component {
               onPress={() => {
               this.setModalVisible(false);
               this.props.revertCamera();
-            }}/>
-          {/*This view creates space between the buttons on this popup*/}
-            <View style={{width: 10}}></View>
-            <Button
-              color='grey'
-              title="Save item to Favorites"
-              onPress={() => {
-                console.log('Favorites button clicked');
             }}/>
             </View>
          </View>
@@ -52,7 +41,7 @@ export default class GreenLight extends Component {
 
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor:'rgba(0,128,0, 0.8)',
+    backgroundColor:'rgba(51,51,255, 0.8)',
     borderColor: '#d6d7da',
     borderWidth: 3,
     borderRadius: 20,
