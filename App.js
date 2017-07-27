@@ -11,6 +11,7 @@ import {
   View
 } from 'react-native';
 import _ from 'lodash';
+import Favorites from './android/components/Favorites'
 import BarcodeScanner from './android/components/BarcodeScanner';
 import Profile from './android/components/Profile';
 import GreenLight from './android/components/GreenLight';
@@ -66,6 +67,7 @@ class HomeScreen extends React.Component {
 }
 
 const ProductGuardian = TabNavigator({
+
   Home: {
     screen: HomeScreen,
     navigationOptions: {
