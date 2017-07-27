@@ -25,8 +25,7 @@ export default class GreenLight extends Component {
          <View style={styles.popup}>
 
             <Text style={{color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>Hooray!</Text>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>Looks like {this.state.sampleProduct} does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
-
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>Looks like {this.props.productInfo.title} does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <Button
               color='grey'
@@ -49,7 +48,6 @@ export default class GreenLight extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   popup: {
     backgroundColor:'rgba(0,128,0, 0.8)',

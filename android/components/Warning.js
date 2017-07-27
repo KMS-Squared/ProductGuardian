@@ -5,9 +5,7 @@ export default class Warning extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: true,
-      sampleProduct: 'Raisins',
-      sampleAllergens: ['raisins', 'peanuts', 'whey']
+      modalVisible: true
     };
   }
 
@@ -25,10 +23,10 @@ export default class Warning extends Component {
           >
          <View style={styles.popup}>
             <Text style={{color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>Warning!</Text>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, marginBottom: 5}}>{this.state.sampleProduct} contains ingredients that you may want to avoid, including: </Text>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, marginBottom: 5}}>{this.props.productInfo.title} contains ingredients that you may want to avoid, including: </Text>
             <View>
               <FlatList
-                data={this.state.sampleAllergens}
+                data={this.props.avoidables}
                 renderItem={({item}) => <Text style={{color: 'white', textAlign: 'center', fontSize: 20, marginBottom: 5}}>{item}</Text>}
               />
             </View>

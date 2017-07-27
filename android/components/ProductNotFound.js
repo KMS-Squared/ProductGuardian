@@ -6,7 +6,6 @@ export default class ProductNotFound extends Component {
     super(props);
     this.state = {
       modalVisible: true,
-      sampleProduct: 'raisins'
     };
   }
 
@@ -23,7 +22,7 @@ export default class ProductNotFound extends Component {
           onRequestClose={() => {console.log('modal closed')}}
           >
          <View style={styles.popup}>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>We're sorry, no information could be found about {this.state.sampleProduct}. Please try another item.</Text>
+            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>We're sorry, no information could be found about this product. Please try another item.</Text>
             <View style={{flexDirection: 'row', justifyContent: 'center'}}>
             <Button
               color='grey'
@@ -38,7 +37,6 @@ export default class ProductNotFound extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   popup: {
     backgroundColor:'rgba(51,51,255, 0.8)',

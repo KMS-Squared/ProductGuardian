@@ -24,7 +24,8 @@ export default class BarcodeScanner extends Component {
       showProductNotFound: false,
       //Use once to make sure that the API is only called one scan at a time
       readBarCode: _.once(this.scanBarCode.bind(this)),
-      productInfo: {}
+      productInfo: {},
+      foundAvoidables: []
     };
     this.hideWarning = this.hideWarning.bind(this);
     this.hideGreenLight = this.hideGreenLight.bind(this);
@@ -34,7 +35,7 @@ export default class BarcodeScanner extends Component {
   componentDidMount() {
     AsyncStorage.getItem('userInfo', (err, userInfo) => {
       var user = JSON.parse(userInfo);
-      //var avoidables = user.avoidables.join(', ');
+      //var avoidables = user.avoidables.join(',');
       this.setState({UserId: user.user_id});
     });
   }
@@ -73,18 +74,17 @@ export default class BarcodeScanner extends Component {
       console.log(response);
    if (response.status === 'OK') {
       this.setState({showGreenLight: true});
-      //this.setState({productInfo: response.product});
+      this.setState({productInfo: response.productInfo});
     } else if (response.status === 'DANGER') {
       this.setState({showWarning: true});
-      //this.setState({productInfo: response.product});
-    } else {
+      this.setState({productInfo: response.productInfo});
+      this.setState({foundAvoidables: response.avoidables});
+    } else if (response.status === 'NOTFOUND') {
       this.setState({showProductNotFound: true});
     }
     }).catch((error) => {console.log(error)});
 
   }
-
-
 
   render() {
     return (
@@ -98,7 +98,7 @@ export default class BarcodeScanner extends Component {
           playSoundOnCapture={true}
           onBarCodeRead={(event) => {this.state.readBarCode(event)}}>
         </Camera>
-        {this.state.showWarning ? <Warning productInfo={this.state.productInfo} revertCamera={this.hideWarning} style={styles.popup}/> : null}
+        {this.state.showWarning ? <Warning productInfo={this.state.productInfo} avoidables={this.state.foundAvoidables} revertCamera={this.hideWarning} style={styles.popup}/> : null}
         {this.state.showGreenLight ? <GreenLight productInfo={this.state.productInfo} revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
         {this.state.showProductNotFound ? <ProductNotFound productInfo={this.state.productInfo} revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
       </View>
