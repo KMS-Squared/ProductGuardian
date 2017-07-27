@@ -5,7 +5,9 @@ import {Icon} from 'react-native-elements';
 
 const mockData = [
   {title: "Cambell's Chicken Noodle Soup", avoidable: "whey"},
-  {title: "LaCroix Grapefruit Sparkling Water", avoidable: "aspartame"}];
+  {title: "LaCroix Grapefruit Sparkling Water", avoidable: "aspartame"},
+  {title: "Nature Valley Nut Bar", avoidable: "aspartame"},
+  {title: "Dentyne Fire Gum", avoidable: "whey"}];
 
 
 export default class Favorites extends React.Component {
@@ -13,10 +15,36 @@ export default class Favorites extends React.Component {
     super(props);
 
     this.state = {
-      data: mockData
+      favorites: mockData
     };
     this.deleteFavorite = this.deleteFavorite.bind(this);
     this.renderItem = this.renderItem.bind(this);
+    this.renderHeader = this.renderHeader.bind(this);
+  }
+
+  renderHeader
+
+  componentDidMount() {
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites')
+      .then(response => response.json())
+      .then(favorites => {
+        favorites.sort((obj1, obj2) => {
+          obj1.name - obj2.name
+        });
+      })
+      .then (this.setState({favorites})
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  renderHeader () {
+    return (
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>Add to Shopping List</Text>
+        <Text style={styles.headerText}>Delete</Text>
+      </View>
+      );
   }
 
   deleteFavorite (item) {
@@ -24,22 +52,24 @@ export default class Favorites extends React.Component {
       //send item title
             //server match item title and send back data again
     //rerender page without item
-    let title = item.title
-    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites:' + {title}), {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    }
-    .then((response) => response.json())
-    .then((returnedFavorites) => {
-      this.state.data = returnedFavorites;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    // let title = item.title;
+    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/' + {title}), {
+    //   method: 'DELETE',
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json',
+    //   }
+    // }
+    // .then((response) => response.json())
+    // .then((returnedFavorites) => {
+    //   this.setState({favorites: returnedFavorites});
+    // })
+    // .catch((error) => {
+    //   console.error(error);
+    // });
   }
+
+
 
   renderItem({item}) {
     const title = `${item.title}`;
@@ -50,7 +80,7 @@ export default class Favorites extends React.Component {
           <Text style={styles.title}>{title}</Text>
         </TouchableHighlight>
         <View>
-        <Icon color='red' name='delete-forever' style={styles.deleteButton} onPress={() => this.deleteFavorite(item)}/>
+          <Icon color='#F89E3A' name='delete-forever' style={styles.deleteButton} onPress={() => this.deleteFavorite(item)}/>
         </View>
       </View>
     );
@@ -60,7 +90,8 @@ export default class Favorites extends React.Component {
     return (
       <View >
         <FlatList
-          data={this.state.data}
+          ListHeaderComponent={this.renderHeader}
+          data={this.state.favorites}
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
         />
@@ -70,11 +101,27 @@ export default class Favorites extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    flex: 1,
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#339966',
+    alignItems: 'center'
+  },
+  headerText: {
+    fontSize: 19,
+    fontWeight: 'bold',
+    color: 'white',
+    marginLeft: 9,
+    paddingLeft: 9,
+    paddingRight: 6
+  },
   row: {
     elevation: 1,
-    borderRadius: 2,
     flex: 1,
     flexDirection: 'row', //main axis
+    justifyContent: 'space-between',
     paddingTop: 10
   },
   container: {
@@ -83,16 +130,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   title: {
-    marginLeft: 12,
+    marginLeft: 9,
     fontSize: 19,
     paddingLeft: 5,
-    alignSelf: 'flex-start'
   },
 
   deleteButton: {
-    alignItems: 'flex-end',
-    height: 22,
-    paddingLeft: 5
+    height: 28,
+    paddingRight: 5
   }
 });
 
