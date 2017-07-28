@@ -1,8 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
-  AppRegistry,
-  AsyncStorage,
-  Dimensions,
   StyleSheet,
   Text,
   TouchableHighlight,
@@ -10,33 +7,31 @@ import {
   Image,
   View
 } from 'react-native';
-import _ from 'lodash';
-import BarcodeScanner from './android/components/BarcodeScanner';
-import Profile from './android/components/Profile';
-import GreenLight from './android/components/GreenLight';
-import { TabNavigator, StackNavigator } from 'react-navigation';
+
 import ActionButton from 'react-native-action-button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FAIcons from 'react-native-vector-icons/FontAwesome'
+import FAIcons from 'react-native-vector-icons/FontAwesome';
+import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-class HomeScreen extends React.Component {
+export default class HomeScreen extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
     return (<View style={{
                 flex: 1,
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 alignItems: 'center',
                 backgroundColor: '#F5FCFF'
               }}>
-              <Image source={{
-                uri: 'http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/assests/PG_logo.png'}}
+              <Image source={require('../app/src/pg_home.png')}
                 style={{
-                  width: 200,
-                  height: 219
+                  width: 220,
+                  height: 144,
+                  marginBottom: 20,
+                  marginTop: 50
                 }} />
               <Text style={styles.welcome}>
-              Welcome to ProductGuardian!
+              ProductGuardian
               </Text>
               <Text style={styles.instructions}>
                 To get started, open the camera and begin scanning product barcodes.
@@ -53,11 +48,11 @@ class HomeScreen extends React.Component {
                 <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => navigate('Profile')}>
                   <FAIcons name="user" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#9b59b6' title="Favorites" onPress={() => navigate('Camera')}>
+                <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites')}>
                   <FAIcons name="star" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#0a86ff' title="Quick Search" onPress={() => {}}>
-                  <FAIcons name="search" style={styles.actionButtonIcon} />
+                <ActionButton.Item buttonColor='#0a86ff' title="Shopping List" onPress={() => navigate('Shopping')}>
+                  <FAIcons name="shopping-cart" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
                 </ActionButton>
 
@@ -65,49 +60,11 @@ class HomeScreen extends React.Component {
   }
 }
 
-const ProductGuardian = TabNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: {
-      title: 'Home',
-    }
-  },
-  Camera: {
-    screen: BarcodeScanner
-  },
-}, {
-  tabBarPosition: 'bottom',
-  tabBarOptions: {
-    style: {
-      backgroundColor: '#339966',
-    }
-  },
-});
-
-const SubScreens = StackNavigator({
-  ProductGuardian: {
-    screen: ProductGuardian,
-    navigationOptions: {
-      title: 'ProductGuardian',
-    }
-  },
-  Profile: {
-    screen: Profile,
-    navigationOptions: {
-      title: 'Profile',
-    }
-  },
-}, {
-  mode: 'modal',
-  headerMode: 'none',
-});
-
-
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 35,
     textAlign: 'center',
-    color: '#ba0d0d',
+    color: '#F89E3A',
     margin: 10,
   },
   instructions: {
@@ -122,9 +79,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     height: 22,
     color: 'white',
-  }
+  },
 });
-
-AppRegistry.registerComponent('ProductGuardian', () => ProductGuardian);
-
 
