@@ -36,7 +36,7 @@ export default class Profile extends React.Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('userInfo', (err, userInfo) => {
+    AsyncStorage.getItem('userInfo').then((err, userInfo) => {
       console.log('user data to be updated', userInfo);
       var user = JSON.parse(userInfo);
       var avoidables = user.avoidables.join(',');
@@ -48,7 +48,7 @@ export default class Profile extends React.Component {
         avatar: user.avatar
       }});
       console.log('user state', this.state.UserData);
-    });
+    }).catch((error) => {console.log(error)});
   }
 
   onPress () {
