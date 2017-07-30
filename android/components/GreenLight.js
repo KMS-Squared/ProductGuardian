@@ -6,12 +6,37 @@ export default class GreenLight extends Component {
     super(props);
     this.state = {
       modalVisible: true,
-      sampleProduct: 'raisins'
     };
+    this.sendToFavorites = this.sendToFavorites.bind(this);
   }
 
   setModalVisible(bool) {
     this.setState({modalVisible: bool});
+  }
+
+  sendToFavorites() {
+    console.log('favorites called');
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites',
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: this.props.productInfo.title,
+          image: this.props.productInfo.product_image,
+          info: this.props.productInfo.product_upc,
+        })
+      })
+    .then((response) => {
+      console.log('RESPONSE', response);
+      return response.json();
+    })
+    .then(() => this.props.revertCamera())
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   render() {
@@ -20,9 +45,9 @@ export default class GreenLight extends Component {
           animationType={"slide"}
           transparent={true}
           visible={this.state.modalVisible}
-          onRequestClose={() => {console.log('modal closed')}}
+          // onRequestClose={() => {console.log('modal closed')}}. <----------Is this being used?
           >
-         <View style={styles.popup}>
+          <View style={styles.popup}>
 
             <Text style={{color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>Hooray!</Text>
             <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>Looks like {this.props.productInfo.title} does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
@@ -31,17 +56,20 @@ export default class GreenLight extends Component {
               color='grey'
               title="Hide Alert"
               onPress={() => {
-              this.setModalVisible(false);
-              this.props.revertCamera();
-            }}/>
+                this.setModalVisible(false);
+                this.props.revertCamera();
+              }}
+            />
           {/*This view creates space between the buttons on this popup*/}
             <View style={{width: 10}}></View>
             <Button
               color='grey'
               title="Save item to Favorites"
               onPress={() => {
-                console.log('Favorites button clicked');
-            }}/>
+                this.sendToFavorites();
+                console.log('Favorites button clicked', this.props.productInfo);
+              }}
+            />
             </View>
          </View>
         </Modal>
