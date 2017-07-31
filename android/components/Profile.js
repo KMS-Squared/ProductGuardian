@@ -31,25 +31,9 @@ export default class Profile extends React.Component {
     this.options = {}; // optional rendering options (see documentation)
     // here we are: define your domain model
     this.state = {
-      UserData: {}
+      UserData: this.props
     }
   }
-
-  // componentDidMount() {
-  //   AsyncStorage.getItem('userInfo').then((err, userInfo) => {
-  //     console.log('user data to be updated', userInfo);
-  //     var user = JSON.parse(userInfo);
-  //     var avoidables = user.avoidables.join(',');
-  //     this.setState({UserData: {
-  //       first_name: user.first_name,
-  //       last_name: user.last_name,
-  //       avoidables: avoidables,
-  //       user_id: user.user_id,
-  //       avatar: user.avatar
-  //     }});
-  //     console.log('user state', this.state.UserData);
-  //   }).catch((error) => {console.log(error)});
-  // }
 
   onPress () {
     // call getValue() to get the values of the form
@@ -77,7 +61,7 @@ export default class Profile extends React.Component {
       }).then((response) => {
         response.json().then((modifiedUser) => {
           console.log('modified user', modifiedUser);
-          AsyncStorage.setItem('userInfo', JSON.stringify(modifiedUser));
+          this.setState({UserData: JSON.stringify(modifiedUser)});
         }).catch((error) => {console.log('error modifying profile', error)});
       }).catch((error) => {console.log('error saving profile', error)});
       this.props.navigation.goBack();

@@ -18,7 +18,7 @@ export default class BarcodeScanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      UserId: props.userId,
+      UserId: props.user_id,
       showWarning: false,
       showGreenLight: false,
       showProductNotFound: false,

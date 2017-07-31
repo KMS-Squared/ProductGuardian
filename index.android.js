@@ -32,7 +32,7 @@ class ProductGuardian extends React.Component {
   render() {
     return (
 
-      <App/>
+      <App screenProps={this.state.userData}/>
 
     );
   }

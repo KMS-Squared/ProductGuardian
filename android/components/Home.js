@@ -18,6 +18,10 @@ import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class HomeScreen extends Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     const { navigate } = this.props.navigation;
     return (<View style={{
@@ -48,7 +52,7 @@ export default class HomeScreen extends Component {
                 offsetY={10}
                 degrees={90}
                 >
-                <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => navigate('Profile')}>
+                <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => navigate('Profile', this.props.screenProps)}>
                   <FAIcons name="user" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
                 <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites')}>
