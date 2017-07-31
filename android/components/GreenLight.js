@@ -15,6 +15,7 @@ export default class GreenLight extends Component {
   }
 
   sendToFavorites() {
+    console.log(this.props, 'PROPS');
     console.log('favorites called');
     fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites',
       {
@@ -24,6 +25,7 @@ export default class GreenLight extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          user_id: this.props.UserId,
           title: this.props.productInfo.title,
           image: this.props.productInfo.product_image,
           info: this.props.productInfo.product_upc,
@@ -45,7 +47,7 @@ export default class GreenLight extends Component {
           animationType={"slide"}
           transparent={true}
           visible={this.state.modalVisible}
-          // onRequestClose={() => {console.log('modal closed')}}. <----------Is this being used?
+          onRequestClose={() => {}}
           >
           <View style={styles.popup}>
 

@@ -101,7 +101,7 @@ export default class BarcodeScanner extends Component {
           onBarCodeRead={(event) => {this.state.readBarCode(event)}}>
         </Camera>
         {this.state.showWarning ? <Warning productInfo={this.state.productInfo} avoidables={this.state.foundAvoidables} revertCamera={this.hideWarning} style={styles.popup}/> : null}
-        {this.state.showGreenLight ? <GreenLight productInfo={this.state.productInfo} revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
+        {this.state.showGreenLight ? <GreenLight productInfo={this.state.productInfo} UserId={this.state.UserId} revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
         {this.state.showProductNotFound ? <ProductNotFound productInfo={this.state.productInfo} revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
       </View>
     );
