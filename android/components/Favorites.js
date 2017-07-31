@@ -1,5 +1,5 @@
 import React, {component} from 'react';
-import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight,AsyncStorage } from 'react-native';
 import {Icon} from 'react-native-elements';
 
 
@@ -15,27 +15,36 @@ export default class Favorites extends React.Component {
     super(props);
 
     this.state = {
-      favorites: mockData
+      favorites: [],
+      UserId: ''
     };
+
     this.deleteFavorite = this.deleteFavorite.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
+    this.getFavorites = this.getFavorites.bind(this);
   }
 
-  renderHeader
-
   componentDidMount() {
-    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites')
-    //   .then(response => response.json())
-    //   .then(favorites => {
-    //     favorites.sort((obj1, obj2) => {
-    //       obj1.title - obj2.title
-    //     });
-    //   })
-    //   .then (this.setState({favorites})
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+    AsyncStorage.getItem('userInfo', (err, userInfo) => {
+      var user = JSON.parse(userInfo);
+      this.setState({UserId: user.user_id});
+    })
+    .then(() => this.getFavorites())
+    .then((returnedFavorites) => {
+      console.log(returnedFavorites, 'FAVORITES');
+      this.setState({favorites: returnedFavorites});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  getFavorites () {
+    return fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/?user_id=${this.state.UserId}`)
+      .then((data) => {
+        return data.json();
+      });
   }
 
   renderHeader () {
@@ -44,29 +53,33 @@ export default class Favorites extends React.Component {
         <Text style={styles.headerText}>Add to Shopping List</Text>
         <Text style={styles.headerText}>Delete</Text>
       </View>
-      );
+    );
   }
 
   deleteFavorite (item) {
-        //delete request to server
-      //send item title
-            //server match item title and send back data again
-    //rerender page without item
-    // let title = item.title;
-    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/' + {title}), {
-    //   method: 'DELETE',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   }
-    // }
-    // .then((response) => response.json())
-    // .then((returnedFavorites) => {
-    //   this.setState({favorites: returnedFavorites});
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    // });
+    //     delete request to server
+    //   send item title
+    //         server match item title and send back data again
+    // rerender page without item
+    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: this.state.UserId,
+        _id: item._id
+      })
+    })
+    .then((response) => response.json())
+    .then(() => this.getFavorites())
+    .then((returnedFavorites) => {
+      this.setState({favorites: returnedFavorites});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
 

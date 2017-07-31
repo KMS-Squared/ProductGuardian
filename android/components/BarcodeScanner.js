@@ -12,7 +12,7 @@ import Camera from 'react-native-camera';
 import _ from 'lodash';
 import Warning from './Warning';
 import GreenLight from './GreenLight';
-import ProductNotFound from './ProductNotFound'
+import ProductNotFound from './ProductNotFound';
 
 export default class BarcodeScanner extends Component {
   constructor(props) {
@@ -68,21 +68,23 @@ export default class BarcodeScanner extends Component {
     } else {
       upc = event.data;
     }
-    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/status?user_id=${this.state.UserId}&upc=${upc}`).then((data) => {
+    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/status?user_id=${this.state.UserId}&upc=${upc}`)
+    .then((data) => {
       return data.json();
-    }).then((response) => {
+    })
+    .then((response) => {
       console.log(response);
-   if (response.status === 'OK') {
-      this.setState({showGreenLight: true});
-      this.setState({productInfo: response.productInfo});
-    } else if (response.status === 'DANGER') {
-      this.setState({showWarning: true});
-      this.setState({productInfo: response.productInfo});
-      this.setState({foundAvoidables: response.avoidables});
-    } else if (response.status === 'NOTFOUND') {
-      this.setState({showProductNotFound: true});
-    }
-    }).catch((error) => {console.log(error)});
+      if (response.status === 'OK') {
+        this.setState({showGreenLight: true});
+        this.setState({productInfo: response.productInfo});
+      } else if (response.status === 'DANGER') {
+        this.setState({showWarning: true});
+        this.setState({productInfo: response.productInfo});
+        this.setState({foundAvoidables: response.avoidables});
+      } else if (response.status === 'NOTFOUND') {
+        this.setState({showProductNotFound: true});
+      }
+    }).catch((error) => {console.log(error);});
 
   }
 
@@ -99,7 +101,7 @@ export default class BarcodeScanner extends Component {
           onBarCodeRead={(event) => {this.state.readBarCode(event)}}>
         </Camera>
         {this.state.showWarning ? <Warning productInfo={this.state.productInfo} avoidables={this.state.foundAvoidables} revertCamera={this.hideWarning} style={styles.popup}/> : null}
-        {this.state.showGreenLight ? <GreenLight productInfo={this.state.productInfo} revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
+        {this.state.showGreenLight ? <GreenLight productInfo={this.state.productInfo} UserId={this.state.UserId} revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
         {this.state.showProductNotFound ? <ProductNotFound productInfo={this.state.productInfo} revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
       </View>
     );
