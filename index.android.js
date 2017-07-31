@@ -9,7 +9,7 @@ import {
 import _ from 'lodash';
 import Favorites from './android/components/Favorites';
 import HomeScreen from './android/components/Home';
-import Shopping from './android/components/ShoppingList'
+import Shopping from './android/components/ShoppingList';
 import BarcodeScanner from './android/components/BarcodeScanner';
 import Profile from './android/components/Profile';
 import { TabNavigator, StackNavigator } from 'react-navigation';
@@ -18,7 +18,7 @@ import Key from './config/AuthKey';
 var Auth0Lock = require('react-native-lock');
 const auth0 = new Auth0(Key);
 const lock = new Auth0Lock(Key);
-const server = 'http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/';
+const server = 'http://10.0.0.42:8080/';
 
 class ProductGuardian extends React.Component {
 
@@ -31,7 +31,9 @@ class ProductGuardian extends React.Component {
 
   render() {
     return (
+
       <App/>
+
     );
   }
 
@@ -87,45 +89,6 @@ class ProductGuardian extends React.Component {
   }
 }
 
-const App = TabNavigator({
-
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: {
-      tabBarLabel: 'Home',
-      tabBarIcon: ({ tintColor }) => (
-      <Image source={require('./android/app/src/home_icon.png')}
-        style={styles.icon}
-      />
-    )}
-  },
-  Camera: {
-    screen: BarcodeScanner,
-    navigationOptions: {
-      tabBarLabel: 'Scan',
-      tabBarIcon: ({ tintColor }) => (
-      <Image source={require('./android/app/src/barcode_scanner.png')}
-        style={styles.icon}
-      />
-    )}
-  },
-}, {
-  tabBarPosition: 'bottom',
-  tabBarOptions: {
-    style: {
-      backgroundColor: '#339966',
-      padding: 0,
-    },
-    showIcon: true,
-    showLabel: false,
-    tabStyle: {
-      padding: 5,
-      height: 60,
-      width: Dimensions.get('window').width/2
-    }
-  },
-});
-
 const SubScreens = StackNavigator({
   ProductGuardian: {
     screen: HomeScreen,
@@ -153,6 +116,46 @@ const SubScreens = StackNavigator({
   mode: 'modal'
 });
 
+const App = TabNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      tabBarLabel: 'Home',
+      tabBarIcon: ({ tintColor }) => (
+      <Image source={require('./android/app/src/home_icon.png')}
+        style={styles.icon}
+      />
+    )}
+  },
+  Camera: {
+    screen: BarcodeScanner,
+    navigationOptions: {
+      tabBarLabel: 'Scan',
+      tabBarIcon: ({ tintColor }) => (
+      <Image source={require('./android/app/src/barcode_scanner.png')}
+        style={styles.icon}
+      />
+    )}
+  },
+  FloatingButtons: {
+    screen: SubScreens,
+  },
+}, {
+  tabBarPosition: 'bottom',
+  tabBarOptions: {
+    style: {
+      backgroundColor: '#339966',
+      padding: 0,
+    },
+    showIcon: true,
+    showLabel: false,
+    tabStyle: {
+      padding: 5,
+      height: 60,
+      width: Dimensions.get('window').width/2
+    }
+  },
+});
 
 const styles = StyleSheet.create({
   icon: {

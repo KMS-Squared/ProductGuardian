@@ -7,7 +7,10 @@ import {
   Image,
   View
 } from 'react-native';
-
+import { StackNavigator, NavigationActions } from 'react-navigation';
+import Profile from './Profile';
+import Favorites from './Favorites';
+import Shopping from './ShoppingList';
 import ActionButton from 'react-native-action-button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FAIcons from 'react-native-vector-icons/FontAwesome';

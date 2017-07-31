@@ -18,7 +18,7 @@ export default class BarcodeScanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      UserId: '',
+      UserId: props.userId,
       showWarning: false,
       showGreenLight: false,
       showProductNotFound: false,
@@ -32,13 +32,13 @@ export default class BarcodeScanner extends Component {
     this.hideProductNotFound = this.hideProductNotFound.bind(this);
   }
 
-  componentDidMount() {
-    AsyncStorage.getItem('userInfo', (err, userInfo) => {
-      var user = JSON.parse(userInfo);
-      //var avoidables = user.avoidables.join(',');
-      this.setState({UserId: user.user_id});
-    });
-  }
+  // componentDidMount() {
+  //   AsyncStorage.getItem('userInfo', (err, userInfo) => {
+  //     var user = JSON.parse(userInfo);
+  //     //var avoidables = user.avoidables.join(',');
+  //     this.setState({UserId: user.user_id});
+  //   });
+  // }
 
   hideWarning() {
     this.setState({showWarning: false});
@@ -68,7 +68,7 @@ export default class BarcodeScanner extends Component {
     } else {
       upc = event.data;
     }
-    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/status?user_id=${this.state.UserId}&upc=${upc}`).then((data) => {
+    fetch(`http://10.0.0.42:8080/status?user_id=${this.state.UserId}&upc=${upc}`).then((data) => {
       return data.json();
     }).then((response) => {
       console.log(response);
