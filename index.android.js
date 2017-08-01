@@ -18,7 +18,7 @@ import Key from './config/AuthKey';
 var Auth0Lock = require('react-native-lock');
 const auth0 = new Auth0(Key);
 const lock = new Auth0Lock(Key);
-const server = 'http://10.0.0.42:8080/';
+const server = 'http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/';
 
 class ProductGuardian extends React.Component {
 
@@ -71,14 +71,14 @@ class ProductGuardian extends React.Component {
             }).then((newUser) => {
                 newUser.json().then((userData) => {
                   console.log('new user data ', userData);
-                  this.setState({userData: JSON.stringify(userData)});
+                  this.setState({userData: userData});
                 }).catch((err) => {
                   console.log(err);
                 });
             });
           } else /*if the user was found in our database */{
             console.log('existing user data ', userData);
-            this.setState({userData: JSON.stringify(userData)});
+            this.setState({userData: userData});
             //Render the home page
           }
         });

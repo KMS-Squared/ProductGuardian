@@ -1,41 +1,25 @@
 import React, {component} from 'react';
-import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, AsyncStorage } from 'react-native';
 import {Icon} from 'react-native-elements';
-
-
-const mockData = [
-  {title: "Cambell's Chicken Noodle Soup", avoidable: "whey"},
-  {title: "LaCroix Grapefruit Sparkling Water", avoidable: "aspartame"},
-  {title: "Nature Valley Nut Bar", avoidable: "aspartame"},
-  {title: "Dentyne Fire Gum", avoidable: "whey"}];
-
+import ProductDetail from './ProductDetail';
 
 export default class Favorites extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      favorites: mockData
+      favorites: [],
+      UserId: '',
+      showProductDetail: false,
+      productInfo: {}
     };
     this.deleteFavorite = this.deleteFavorite.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
+    this.hideProductDetail = this.hideProductDetail.bind(this);
   }
 
-  renderHeader
-
-  componentDidMount() {
-    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites')
-    //   .then(response => response.json())
-    //   .then(favorites => {
-    //     favorites.sort((obj1, obj2) => {
-    //       obj1.title - obj2.title
-    //     });
-    //   })
-    //   .then (this.setState({favorites})
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+  hideProductDetail () {
+    this.setState({showProductDetail: false});
   }
 
   renderHeader () {
@@ -44,39 +28,37 @@ export default class Favorites extends React.Component {
         <Text style={styles.headerText}>Add to Shopping List</Text>
         <Text style={styles.headerText}>Delete</Text>
       </View>
-      );
+    );
   }
 
   deleteFavorite (item) {
-        //delete request to server
-      //send item title
-            //server match item title and send back data again
-    //rerender page without item
-    // let title = item.title;
-    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/' + {title}), {
-    //   method: 'DELETE',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   }
-    // }
-    // .then((response) => response.json())
-    // .then((returnedFavorites) => {
-    //   this.setState({favorites: returnedFavorites});
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    // });
+    const {state} = this.props.navigation;
+    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: state.params.user_id,
+        _id: item._id
+      })
+    })
+    .then((response) => response.json())
+    .then(() => this.getFavorites())
+    .then((returnedFavorites) => {
+      state.params.favorites = returnedFavorites;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
-
-
 
   renderItem({item}) {
     const title = `${item.title}`;
-//    const {iconName, iconColor} = item.icon;
     return (
       <View style={styles.row}>
-        <TouchableHighlight onPress={() => console.log('TouchableHighlight')}>
+        <TouchableHighlight onPress={() => this.setState({showProductDetail: true, productInfo: item})}>
           <Text style={styles.title}>{title}</Text>
         </TouchableHighlight>
         <View>
@@ -88,13 +70,14 @@ export default class Favorites extends React.Component {
 
   render() {
     return (
-      <View >
+      <View>
         <FlatList
           ListHeaderComponent={this.renderHeader}
           data={this.state.favorites}
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
         />
+        {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={this.state.UserId}/> : null}
       </View>
     );
   }
@@ -134,10 +117,8 @@ const styles = StyleSheet.create({
     fontSize: 19,
     paddingLeft: 5,
   },
-
   deleteButton: {
     height: 28,
     paddingRight: 5
   }
 });
-

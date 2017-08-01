@@ -8,6 +8,7 @@ import {
   View,
   Image,
   Dimensions,
+  ScrollView,
   TouchableHighlight
 } from 'react-native';
 import FAIcons from 'react-native-vector-icons/FontAwesome';
@@ -31,17 +32,20 @@ export default class Profile extends React.Component {
     this.options = {}; // optional rendering options (see documentation)
     // here we are: define your domain model
     this.state = {
-      UserData: this.props
-    }
+      first_name: '',
+      last_name: '',
+      avoidables: ''
+    };
   }
 
   onPress () {
     // call getValue() to get the values of the form
+    const {state} = this.props.navigation;
     var value = this.refs.form.getValue();
     if (value) { // if validation fails, value will be null
       console.log(value);
       console.log('body =====', JSON.stringify({
-          user_id: this.state.UserData.user_id,
+          user_id: state.params.user_id,
           first_name: value.first_name,
           last_name: value.last_name,
           avoidables: value.avoidables
@@ -53,7 +57,7 @@ export default class Profile extends React.Component {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          user_id: this.state.UserData.user_id,
+          user_id: state.params.user_id,
           first_name: value.first_name,
           last_name: value.last_name,
           avoidables: value.avoidables
@@ -61,7 +65,9 @@ export default class Profile extends React.Component {
       }).then((response) => {
         response.json().then((modifiedUser) => {
           console.log('modified user', modifiedUser);
-          this.setState({UserData: JSON.stringify(modifiedUser)});
+          state.params.first_name = modifiedUser.first_name;
+          state.params.last_name = modifiedUser.last_name;
+          state.params.avoidables = modifiedUser.avoidables;
         }).catch((error) => {console.log('error modifying profile', error)});
       }).catch((error) => {console.log('error saving profile', error)});
       this.props.navigation.goBack();
@@ -69,10 +75,11 @@ export default class Profile extends React.Component {
   }
 
   render () {
-    const link = this.state.UserData.avatar;
+    const {state} = this.props.navigation;
+    const link = state.params.avatar;
     return (
       <View style={styles.container}>
-        {this.state.UserData.avatar ?
+        {state.params.avatar ?
           <View style={styles.bgContainer}>
               <Image
               source={{uri: link}}
@@ -90,7 +97,7 @@ export default class Profile extends React.Component {
           <Form
             ref="form"
             type={User}
-            value={this.state.UserData}
+            value={{first_name: state.params.first_name, last_name: state.params.last_name, avoidables: state.params.avoidables.join(',')}}
             options={this.options}
           />
           <TouchableHighlight style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
@@ -121,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   form: {
-    marginTop: 210,
+    marginTop: 150,
     justifyContent: 'flex-start',
     alignSelf: 'center',
     paddingLeft: 30,

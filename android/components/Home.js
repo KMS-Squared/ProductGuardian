@@ -52,13 +52,13 @@ export default class HomeScreen extends Component {
                 offsetY={10}
                 degrees={90}
                 >
-                <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => navigate('Profile', this.props.screenProps)}>
+                <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => {navigate('Profile', this.props.screenProps)}}>
                   <FAIcons name="user" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites')}>
+                <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites', this.props.screenProps)}>
                   <FAIcons name="star" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
-                <ActionButton.Item buttonColor='#0a86ff' title="Shopping List" onPress={() => navigate('Shopping')}>
+                <ActionButton.Item buttonColor='#0a86ff' title="Shopping List" onPress={() => navigate('Shopping', this.props.screenProps)}>
                   <FAIcons name="shopping-cart" style={styles.actionButtonIcon} />
                 </ActionButton.Item>
                 </ActionButton>

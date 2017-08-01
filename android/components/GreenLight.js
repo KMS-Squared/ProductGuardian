@@ -6,12 +6,38 @@ export default class GreenLight extends Component {
     super(props);
     this.state = {
       modalVisible: true,
-      sampleProduct: 'raisins'
     };
   }
 
   setModalVisible(bool) {
     this.setState({modalVisible: bool});
+  }
+
+  sendToFavorites() {
+    console.log(this.props, 'PROPS');
+    console.log('favorites called');
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites',
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.props.UserId,
+          title: this.props.productInfo.title,
+          image: this.props.productInfo.product_image,
+          info: this.props.productInfo.product_upc,
+        })
+      })
+    .then((response) => {
+      console.log('RESPONSE', response);
+      return response.json();
+    })
+    .then(() => this.props.revertCamera())
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   render() {
@@ -40,6 +66,7 @@ export default class GreenLight extends Component {
               color='grey'
               title="Save item to Favorites"
               onPress={() => {
+                this.sendToFavorites();
                 console.log('Favorites button clicked');
             }}/>
             </View>

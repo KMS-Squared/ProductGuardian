@@ -36,7 +36,6 @@ export default class Warning extends Component {
               color='grey'
               title='Hide Alert'
               onPress={() => {
-                console.log('click');
               this.setModalVisible(false);
               this.props.revertCamera();
             }}/>
