@@ -27,31 +27,10 @@ export default class HomeScreen extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.mainContainer}>
-
-<<<<<<< HEAD
-              <ActionButton buttonColor="rgba(231,76,60,1)"
-                icon={
-                  <Ionicons name="md-more" style={styles.actionButtonIcon} />
-                }
-                offsetX={15}
-                offsetY={10}
-                degrees={90}
-                >
-                <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => {navigate('Profile', this.props.screenProps)}}>
-                  <FAIcons name="user" style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-                <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites', this.props.screenProps)}>
-                  <FAIcons name="star" style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-                <ActionButton.Item buttonColor='#0a86ff' title="Shopping List" onPress={() => navigate('Shopping', this.props.screenProps)}>
-                  <FAIcons name="shopping-cart" style={styles.actionButtonIcon} />
-                </ActionButton.Item>
-                </ActionButton>
-=======
     {/*****Background Image*******/}
         <View style={styles.bgContainer}>
             <Image
-            source={require('../app/src/grocery_bg2.jpg')}
+            source={require('../app/src/grocery_bg.jpg')}
             style={styles.bg}
             blurRadius={0}>
             </Image>
@@ -66,20 +45,19 @@ export default class HomeScreen extends Component {
           <Text style={styles.instructions}>
             To get started, open the camera and begin scanning product barcodes.
           </Text>
->>>>>>> Edited Home Page
 
           <ActionButton buttonColor="rgba(231,76,60,1)"
-            icon={ <Ionicons name="md-more" style={styles.actionButtonIcon} />}
+            icon={<Ionicons name="md-more" style={styles.actionButtonIcon} />}
             offsetX={15}
             offsetY={10}
             degrees={90}>
-            <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => navigate('Profile')}>
+            <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => {navigate('Profile', this.props.screenProps)}}>
               <FAIcons name="user" style={styles.actionButtonIcon} />
             </ActionButton.Item>
-            <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites')}>
+            <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites', this.props.screenProps)}>
               <FAIcons name="star" style={styles.actionButtonIcon} />
             </ActionButton.Item>
-            <ActionButton.Item buttonColor='#0a86ff' title="Shopping List" onPress={() => navigate('Shopping')}>
+            <ActionButton.Item buttonColor='#0a86ff' title="Shopping List" onPress={() => navigate('Shopping', this.props.screenProps)}>
               <FAIcons name="shopping-cart" style={styles.actionButtonIcon} />
             </ActionButton.Item>
           </ActionButton>
@@ -149,4 +127,3 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-
