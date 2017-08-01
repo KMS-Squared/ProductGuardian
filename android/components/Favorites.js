@@ -1,30 +1,22 @@
 import React, {component} from 'react';
 import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight,AsyncStorage } from 'react-native';
 import {Icon} from 'react-native-elements';
-
-
-const mockData = [
-  {title: "Cambell's Chicken Noodle Soup", avoidable: "whey"},
-  {title: "LaCroix Grapefruit Sparkling Water", avoidable: "aspartame"},
-  {title: "Nature Valley Nut Bar", avoidable: "aspartame"},
-  {title: "Dentyne Fire Gum", avoidable: "whey"}];
-
-
+import ProductDetail from './ProductDetail';
 export default class Favorites extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       favorites: [],
-      UserId: ''
+      UserId: '',
+      showProductDetail: false,
+      productInfo: {}
     };
-
     this.deleteFavorite = this.deleteFavorite.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.getFavorites = this.getFavorites.bind(this);
+    this.hideProductDetail = this.hideProductDetail.bind(this);
   }
-
   componentDidMount() {
     AsyncStorage.getItem('userInfo', (err, userInfo) => {
       var user = JSON.parse(userInfo);
@@ -39,14 +31,15 @@ export default class Favorites extends React.Component {
       console.error(error);
     });
   }
-
+  hideProductDetail () {
+    this.setState({showProductDetail: false});
+  }
   getFavorites () {
     return fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/?user_id=${this.state.UserId}`)
       .then((data) => {
         return data.json();
       });
   }
-
   renderHeader () {
     return (
       <View style={styles.headerContainer}>
@@ -55,7 +48,6 @@ export default class Favorites extends React.Component {
       </View>
     );
   }
-
   deleteFavorite (item) {
     //     delete request to server
     //   send item title
@@ -81,15 +73,12 @@ export default class Favorites extends React.Component {
       console.error(error);
     });
   }
-
-
-
   renderItem({item}) {
     const title = `${item.title}`;
 //    const {iconName, iconColor} = item.icon;
     return (
       <View style={styles.row}>
-        <TouchableHighlight onPress={() => console.log('TouchableHighlight')}>
+        <TouchableHighlight onPress={() => this.setState({showProductDetail: true, productInfo: item})}>
           <Text style={styles.title}>{title}</Text>
         </TouchableHighlight>
         <View>
@@ -98,7 +87,6 @@ export default class Favorites extends React.Component {
       </View>
     );
   }
-
   render() {
     return (
       <View >
@@ -108,11 +96,11 @@ export default class Favorites extends React.Component {
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
         />
+        {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={this.state.UserId}/> : null}
       </View>
     );
   }
 }
-
 const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
@@ -147,7 +135,6 @@ const styles = StyleSheet.create({
     fontSize: 19,
     paddingLeft: 5,
   },
-
   deleteButton: {
     height: 28,
     paddingRight: 5
