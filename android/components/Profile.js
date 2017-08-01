@@ -121,7 +121,6 @@ export default class Profile extends React.Component {
     )
   }
 
-
   renderSeparator () {
     return (
       <View
@@ -133,7 +132,6 @@ export default class Profile extends React.Component {
       />
     );
   }
-
 
   render () {
     const {state} = this.props.navigation;
