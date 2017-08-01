@@ -12,6 +12,7 @@ export default class Favorites extends React.Component {
       showProductDetail: false,
       productInfo: {}
     };
+
     this.deleteFavorite = this.deleteFavorite.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);

@@ -5,21 +5,22 @@ import {
   AsyncStorage,
   StyleSheet,
   Text,
+  TextInput,
   View,
+  FlatList,
+  ScrollView,
   Image,
   Dimensions,
-  ScrollView,
   TouchableHighlight
 } from 'react-native';
 import FAIcons from 'react-native-vector-icons/FontAwesome';
+import Swipeout from 'react-native-swipeout';
 
 let Form = t.form.Form;
 let User = t.struct({
-  // username: t.String,
   first_name: t.String,
   last_name: t.String,
   avoidables: t.String,
-  // password: t.String
 });
 
 export default class Profile extends React.Component {
@@ -32,79 +33,164 @@ export default class Profile extends React.Component {
     this.options = {}; // optional rendering options (see documentation)
     // here we are: define your domain model
     this.state = {
-      first_name: '',
-      last_name: '',
-      avoidables: ''
-    };
-  }
-
-  onPress () {
-    // call getValue() to get the values of the form
-    const {state} = this.props.navigation;
-    var value = this.refs.form.getValue();
-    if (value) { // if validation fails, value will be null
-      console.log(value);
-      console.log('body =====', JSON.stringify({
-          user_id: state.params.user_id,
-          first_name: value.first_name,
-          last_name: value.last_name,
-          avoidables: value.avoidables
-        }));
-      fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/edit-profile', {
-        method: 'PUT',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          user_id: state.params.user_id,
-          first_name: value.first_name,
-          last_name: value.last_name,
-          avoidables: value.avoidables
-        })
-      }).then((response) => {
-        response.json().then((modifiedUser) => {
-          console.log('modified user', modifiedUser);
-          state.params.first_name = modifiedUser.first_name;
-          state.params.last_name = modifiedUser.last_name;
-          state.params.avoidables = modifiedUser.avoidables;
-        }).catch((error) => {console.log('error modifying profile', error)});
-      }).catch((error) => {console.log('error saving profile', error)});
-      this.props.navigation.goBack();
+      UserData: {},
+      avoidableList: this.props.navigation.avoidables,
+      addItem: '',
     }
   }
 
+  onPress () {
+    // call getValue() to get the values of the form // if validation fails, value will be null
+    const {state} = this.props.navigation;
+    console.log('body =====', JSON.stringify({
+        user_id: state.params.user_id,
+        first_name: state.params.first_name,
+        last_name: state.params.last_name,
+        avoidables: this.state.avoidableList
+      }));
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/edit-profile', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: state.params.user_id,
+        first_name: state.params.first_name,
+        last_name: state.params.last_name,
+        avoidables: this.state.avoidableList
+      })
+    }).then((response) => {
+      response.json().then((modifiedUser) => {
+        console.log('modified user', modifiedUser);
+        state.params.first_name = modifiedUser.first_name;
+        state.params.last_name = modifiedUser.last_name;
+        state.params.avoidables = modifiedUser.avoidables;
+        //this.setState({avoidableList: modifiedUser.avoidables});
+      }).catch((error) => {console.log('error modifying profile', error)});
+    }).catch((error) => {console.log('error saving profile', error)});
+    this.props.navigation.goBack();
+  }
+
+  deleteItem(index) {
+    const {state} = this.props.navigation;
+    state.params.avoidables.splice(index, 1);
+  }
+
+  addAvoidable() {
+    const {state} = this.props.navigation;
+    state.params.avoidables.push(this.state.addItem);
+    let index = state.params.avoidables.length;
+    state.params.avoidables.splice(index-1, 1, this.state.addItem)
+    this._textInput.setNativeProps({text: ''});
+    let prev = state.params.avoidables.slice(0);
+    // prev.push(this.state.addItem)
+    state.params.avoidables = prev;
+  }
+
+  renderSeparator () {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: Dimensions.get('window').width,
+          backgroundColor: "#CED0CE",
+        }}
+      />
+    );
+  }
+
+  renderItem(item) {
+    let swipeBtns = [{
+      text: 'Delete',
+      backgroundColor: '#F89E3A',
+      onPress: this.deleteItem.bind(this, item.index)
+    }];
+    return (
+      <Swipeout
+        style={styles.swipe}
+        right={swipeBtns}
+        autoClose={true}
+        >
+        <View>
+          <Text style={styles.avoidable}>{item.item.toUpperCase()}</Text>
+        </View>
+      </Swipeout>
+    )
+  }
+
+
+  renderSeparator () {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: Dimensions.get('window').width,
+          backgroundColor: "#CED0CE",
+        }}
+      />
+    );
+  }
+
+
   render () {
     const {state} = this.props.navigation;
-    const link = state.params.avatar;
     return (
-      <View style={styles.container}>
+      <ScrollView>
         {state.params.avatar ?
-          <View style={styles.bgContainer}>
+          <View>
+            <View style={styles.bgContainer}>
+                <Image
+                source={{uri: state.params.avatar}}
+                style={styles.avatarBG}
+                blurRadius={5}>
+                <Text style={styles.userInfo}>{`${state.params.first_name} ${state.params.last_name}`}</Text>
+                </Image>
+            </View>
+            <View style={styles.overlay}>
               <Image
-              source={{uri: link}}
-              style={styles.avatarBG}
-              blurRadius={0}>
-              </Image>
+                source={{uri: state.params.avatar}}
+                style={styles.avatar} />
+
+            </View>
           </View>
         :
-          <View style={styles.bgContainer}>
-            <Image source={require('../app/src/user_icon.png')}
+          <View>
+            <View style={styles.bgContainer}>
+                <Text style={styles.userInfo}>{`${state.params.first_name} ${state.params.last_name}`}</Text>
+            </View>
+            <View style={styles.overlay}>
+              <Image source={require('../app/src/user_icon.png')}
                 style={styles.avatar2} />
+            </View>
           </View>
         }
-        <View style={styles.form}>
-          <Form
-            ref="form"
-            type={User}
-            value={{first_name: state.params.first_name, last_name: state.params.last_name, avoidables: state.params.avoidables.join(',')}}
-            options={this.options}
+        <View style={styles.avoidableList}>
+          <Text style={{marginBottom: 10, fontSize: 20, alignSelf: 'center'}}>Allergen List</Text>
+          <FlatList
+            data={state.params.avoidables}
+            renderItem={this.renderItem.bind(this)}
+            ItemSeparatorComponent={this.renderSeparator}
           />
+
+          <View style={{padding: 10, flexDirection: 'row',justifyContent: 'center'}}>
+            <TextInput
+              style={{height: 40, width: "75%", alignSelf: 'center'}}
+              ref={component => this._textInput = component}
+              placeholder="Add other allergens"
+              onChangeText={(addItem) => {this.setState({addItem: addItem})}}
+
+             />
+            <TouchableHighlight style={{width: 50}}onPress={this.addAvoidable.bind(this)} underlayColor='#99d9f4'>
+            <Text style={{fontSize: 20, alignSelf: 'center', justifyContent:'center'}}>+</Text>
+            </TouchableHighlight>
+          </View>
           <TouchableHighlight style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableHighlight>
+
         </View>
-      </View>
+      </ScrollView>
     );
   }
 };
@@ -112,7 +198,7 @@ export default class Profile extends React.Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
-    padding: 30,
+    padding: 0,
     height: Dimensions.get('window').height,
     backgroundColor: '#ffffff',
   },
@@ -123,20 +209,25 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#F89E3A',
-  },
-  avatarContainer: {
-    backgroundColor: '#ffffff'
-  },
-  form: {
-    marginTop: 150,
-    justifyContent: 'flex-start',
-    alignSelf: 'center',
-    paddingLeft: 30,
-    paddingRight: 30,
-    paddingTop: 10,
+    padding: 0,
+    height: "100%",
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+  },
+  overlay: {
+    width: Dimensions.get('window').width,
+    height: 250,
+  },
+  avoidableList: {
+    alignSelf: 'center',
+    paddingLeft: 50,
+    paddingRight: 50,
+    paddingTop: 20,
+    width: Dimensions.get('window').width,
     backgroundColor: '#ffffff',
+    paddingBottom: 20,
+  },
+  swipe: {
+    backgroundColor: '#ffffff'
   },
   title: {
     fontSize: 30,
@@ -159,20 +250,38 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center'
   },
+  avoidable: {
+    fontSize: 12,
+    paddingTop: 10,
+    paddingBottom: 10,
+    alignSelf: 'center'
+  },
   avatarBG: {
     width: Dimensions.get('window').width,
     height: 250,
+  },
+  avatar: {
+    marginTop: 30,
+    width: 150,
+    height: 150,
     alignSelf: 'center',
-    marginBottom: 20,
-    marginTop: 0,
-    resizeMode: 'cover',
+    borderRadius: 75,
+    borderWidth: 5,
+    borderColor: '#ffffff',
+    justifyContent: 'center',
   },
   avatar2: {
-    marginTop: 10,
-    width: 200,
-    height: 200,
+    marginTop: 45,
+    width: 150,
+    height: 150,
     alignSelf: 'center',
     justifyContent: 'center',
+  },
+   userInfo: {
+    fontSize: 25,
+    color: '#ffffff',
+    alignSelf: 'center',
+    marginTop: 180
   },
   avatarName: {
     color: 'white',

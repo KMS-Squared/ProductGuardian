@@ -7,6 +7,7 @@ export default class GreenLight extends Component {
     this.state = {
       modalVisible: true,
     };
+    this.sendToFavorites = this.sendToFavorites.bind(this);
   }
 
   setModalVisible(bool) {
@@ -14,7 +15,6 @@ export default class GreenLight extends Component {
   }
 
   sendToFavorites() {
-    console.log();
     fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites',
       {
         method: 'POST',
@@ -51,9 +51,9 @@ export default class GreenLight extends Component {
           animationType={"slide"}
           transparent={true}
           visible={this.state.modalVisible}
-          onRequestClose={() => {console.log('modal closed')}}
+          onRequestClose={() => {}}
           >
-         <View style={styles.popup}>
+          <View style={styles.popup}>
 
             <Text style={{color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>Hooray!</Text>
             <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>Looks like {this.props.productInfo.title} does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
@@ -62,9 +62,10 @@ export default class GreenLight extends Component {
               color='grey'
               title="Hide Alert"
               onPress={() => {
-              this.setModalVisible(false);
-              this.props.revertCamera();
-            }}/>
+                this.setModalVisible(false);
+                this.props.revertCamera();
+              }}
+            />
           {/*This view creates space between the buttons on this popup*/}
             <View style={{width: 10}}></View>
             <Button
