@@ -37,22 +37,6 @@ export default class Profile extends React.Component {
     }
   }
 
-  componentDidMount() {
-    AsyncStorage.getItem('userInfo', (err, userInfo) => {
-      console.log('user data to be updated', userInfo);
-      var user = JSON.parse(userInfo);
-      var avoidables = user.avoidables.join(',');
-      this.setState({UserData: {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        avoidables: avoidables,
-        user_id: user.user_id,
-        avatar: user.avatar
-      }});
-      console.log('Avoidables', this.state.UserData.avoidables.split(','));
-    });
-  }
-
   onPress () {
     // call getValue() to get the values of the form
     var value = this.refs.form.getValue();

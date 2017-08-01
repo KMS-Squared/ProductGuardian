@@ -90,9 +90,29 @@ const SubScreens = StackNavigator({
 
 
 const styles = StyleSheet.create({
+  welcome: {
+    fontSize: 35,
+    textAlign: 'center',
+    color: '#F89E3A',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+  disclaimer: {
+    fontSize: 10
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    // color: 'white',
+  },
   icon: {
     height: 25,
     width: 25,
+    // color: 'white'
   }
 });
 
