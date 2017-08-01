@@ -79,7 +79,7 @@ export default class Favorites extends React.Component {
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
         />
-        {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={this.state.UserId} deleteFavorite={this.deleteFavorite}/> : null}
+        {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={state.params.user_id} deleteFavorite={this.deleteFavorite}/> : null}
       </View>
     );
   }
