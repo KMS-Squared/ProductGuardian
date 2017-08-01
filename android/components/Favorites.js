@@ -16,7 +16,9 @@ export default class Favorites extends React.Component {
     this.renderHeader = this.renderHeader.bind(this);
     this.getFavorites = this.getFavorites.bind(this);
     this.hideProductDetail = this.hideProductDetail.bind(this);
+    this.addShoppingList = this.addShoppingList.bind(this);
   }
+
   componentDidMount() {
     AsyncStorage.getItem('userInfo', (err, userInfo) => {
       var user = JSON.parse(userInfo);
@@ -31,9 +33,15 @@ export default class Favorites extends React.Component {
       console.error(error);
     });
   }
+
   hideProductDetail () {
     this.setState({showProductDetail: false});
   }
+
+  addShoppingList () {
+    console.log('addShoppingList');
+  }
+
   getFavorites () {
     return fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/?user_id=${this.state.UserId}`)
       .then((data) => {
@@ -49,10 +57,6 @@ export default class Favorites extends React.Component {
     );
   }
   deleteFavorite (item) {
-    //     delete request to server
-    //   send item title
-    //         server match item title and send back data again
-    // rerender page without item
     fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites`, {
       method: 'DELETE',
       headers: {
@@ -75,9 +79,11 @@ export default class Favorites extends React.Component {
   }
   renderItem({item}) {
     const title = `${item.title}`;
-//    const {iconName, iconColor} = item.icon;
     return (
       <View style={styles.row}>
+        <View>
+          <Icon name='add-shopping-cart' color='#339966' onPress={() => this.addShoppingList(item)}/>
+        </View>
         <TouchableHighlight onPress={() => this.setState({showProductDetail: true, productInfo: item})}>
           <Text style={styles.title}>{title}</Text>
         </TouchableHighlight>
