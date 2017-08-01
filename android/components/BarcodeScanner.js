@@ -33,11 +33,11 @@ export default class BarcodeScanner extends Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem('userInfo', (err, userInfo) => {
-      var user = JSON.parse(userInfo);
-      //var avoidables = user.avoidables.join(',');
-      this.setState({UserId: user.user_id});
-    });
+    // AsyncStorage.getItem('userInfo', (err, userInfo) => {
+    //   var user = JSON.parse(userInfo);
+    //   //var avoidables = user.avoidables.join(',');
+    //   this.setState({UserId: user.user_id});
+    // });
   }
 
   hideWarning() {
