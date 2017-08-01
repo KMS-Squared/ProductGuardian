@@ -3,12 +3,6 @@ import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight } from 're
 import {Icon} from 'react-native-elements';
 
 
-const mockData = [
-  {title: "Cambell's Chicken Noodle Soup", avoidable: "whey"},
-  {title: "LaCroix Grapefruit Sparkling Water", avoidable: "aspartame"},
-  {title: "Nature Valley Nut Bar", avoidable: "aspartame"},
-  {title: "Dentyne Fire Gum", avoidable: "whey"}];
-
 
 export default class ShoppingList extends React.Component {
   constructor(props) {
@@ -42,7 +36,7 @@ export default class ShoppingList extends React.Component {
         <Text style={styles.headerText}>Shopping List</Text>
         <Text style={styles.headerText} onPress={() => this.deleteAll()}>Delete All</Text>
       </View>
-      );
+    );
   }
 
   deleteItem (item) {
