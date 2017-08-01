@@ -78,15 +78,6 @@ export default class Profile extends React.Component {
   }
 
   addAvoidable() {
-<<<<<<< HEAD
-    console.log(this.props)
-    console.log('additem', this.state.addItem)
-    // this.state.avoidableList.push(this.state.addItem);
-    // // console.log('avoidable list after push', this.state.avoidableList)
-    // this.setState({
-    //   avoidableList: this.state.avoidableList
-    // });
-=======
     this.state.avoidableList.push(this.state.addItem);
     let index = this.state.avoidableList.length;
     this.state.avoidableList.splice(index-1, 1, this.state.addItem)
@@ -96,8 +87,6 @@ export default class Profile extends React.Component {
     this.setState(() => ({
       avoidableList: prev
     }));
-
->>>>>>> Finished rendering after adding item
   }
 
   renderSeparator () {
