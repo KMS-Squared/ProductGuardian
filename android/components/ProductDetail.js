@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Text, TouchableHighlight, StyleSheet, View, Image} from 'react-native';
-import { Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 
 export default class ProductDetail extends Component {
   constructor(props) {
@@ -28,16 +28,14 @@ export default class ProductDetail extends Component {
         <View style={styles.popup}>
           <Text style={styles.title}>{this.props.productInfo.title}</Text>
           <Image
-            style={{width: 100, height: 200}}
+            style={{width: 150, height: 300}}
             source={{uri: this.props.productInfo.image}}/>
-          {/*<Text>{this.props.productInfo.ingredients}</Text>*/}
-          <Button
-            large
-            icon={{name: 'done'}}
-            title='Hide details'
-            color='#339966'
-            onPress={() => this.setModalVisible(false)}
-            />
+          <Text>INGREDIENTS GO HERE</Text>
+          <TouchableHighlight style={styles.button} onPress={() => this.setModalVisible(false)} underlayColor='#99d9f4'>
+            <View>
+              <Icon color='white' name='done' />
+            </View>
+          </TouchableHighlight>
         </View>
       </Modal>
     );
@@ -55,7 +53,19 @@ const styles = StyleSheet.create({
     flex: 1
   },
   title: {
-    fontSize: 19,
-    color: 'black'
-  }
+    fontSize: 24,
+    color: 'black',
+    alignSelf: 'center'
+  },
+  button: {
+    height: 40,
+    backgroundColor: '#339966',
+    borderColor: '#339966',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginTop: 40,
+    marginBottom: 10,
+    alignSelf: 'stretch',
+    justifyContent: 'center'
+  },
 });
