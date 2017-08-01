@@ -34,7 +34,7 @@ export default class Profile extends React.Component {
     // here we are: define your domain model
     this.state = {
       UserData: {},
-      avoidableList: this.props.navigation.avoidables,
+      avoidableList: null,
       addItem: '',
     }
   }
@@ -58,7 +58,7 @@ export default class Profile extends React.Component {
         user_id: state.params.user_id,
         first_name: state.params.first_name,
         last_name: state.params.last_name,
-        avoidables: this.state.avoidableList
+        avoidables: state.params.avoidables.join(',')
       })
     }).then((response) => {
       response.json().then((modifiedUser) => {
@@ -66,7 +66,7 @@ export default class Profile extends React.Component {
         state.params.first_name = modifiedUser.first_name;
         state.params.last_name = modifiedUser.last_name;
         state.params.avoidables = modifiedUser.avoidables;
-        //this.setState({avoidableList: modifiedUser.avoidables});
+        this.setState({avoidableList: modifiedUser.avoidables});
       }).catch((error) => {console.log('error modifying profile', error)});
     }).catch((error) => {console.log('error saving profile', error)});
     this.props.navigation.goBack();
@@ -75,17 +75,19 @@ export default class Profile extends React.Component {
   deleteItem(index) {
     const {state} = this.props.navigation;
     state.params.avoidables.splice(index, 1);
+    this.setState({
+      avoidableList: state.params.avoidables
+    });
   }
 
   addAvoidable() {
     const {state} = this.props.navigation;
-    state.params.avoidables.push(this.state.addItem);
-    let index = state.params.avoidables.length;
-    state.params.avoidables.splice(index-1, 1, this.state.addItem)
-    this._textInput.setNativeProps({text: ''});
-    let prev = state.params.avoidables.slice(0);
-    // prev.push(this.state.addItem)
-    state.params.avoidables = prev;
+    if (this.state.addItem.length !== 0) {
+      state.params.avoidables.push(this.state.addItem);
+      this._textInput.setNativeProps({text: ''});
+      let prev = state.params.avoidables.slice();
+      this.setState({avoidableList: prev});
+    }
   }
 
   renderSeparator () {
@@ -168,7 +170,7 @@ export default class Profile extends React.Component {
         <View style={styles.avoidableList}>
           <Text style={{marginBottom: 10, fontSize: 20, alignSelf: 'center'}}>Allergen List</Text>
           <FlatList
-            data={state.params.avoidables}
+            data={this.state.avoidableList || state.params.avoidables}
             renderItem={this.renderItem.bind(this)}
             ItemSeparatorComponent={this.renderSeparator}
           />
@@ -181,7 +183,7 @@ export default class Profile extends React.Component {
               onChangeText={(addItem) => {this.setState({addItem: addItem})}}
 
              />
-            <TouchableHighlight style={{width: 50}}onPress={this.addAvoidable.bind(this)} underlayColor='#99d9f4'>
+            <TouchableHighlight style={{width: 50}} onPress={this.addAvoidable.bind(this)} underlayColor='#99d9f4'>
             <Text style={{fontSize: 20, alignSelf: 'center', justifyContent:'center'}}>+</Text>
             </TouchableHighlight>
           </View>
