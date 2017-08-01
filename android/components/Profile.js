@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
+  FlatList,
+  ScrollView,
   Image,
   Dimensions,
   TouchableHighlight
@@ -34,8 +36,6 @@ export default class Profile extends React.Component {
       UserData: {}
     }
   }
-
-
 
   onPress () {
     // call getValue() to get the values of the form
@@ -70,36 +70,72 @@ export default class Profile extends React.Component {
     }
   }
 
-  render () {
-    const link = this.state.UserData.avatar;
+
+  renderSeparator () {
     return (
-      <View style={styles.container}>
+      <View
+        style={{
+          height: 1,
+          width: Dimensions.get('window').width,
+          backgroundColor: "#CED0CE",
+        }}
+      />
+    );
+  }
+
+
+  render () {
+    return (
+
+      <ScrollView>
         {this.state.UserData.avatar ?
-          <View style={styles.bgContainer}>
+          <View>
+            <View style={styles.bgContainer}>
+                <Image
+                source={{uri: this.state.UserData.avatar}}
+                style={styles.avatarBG}
+                blurRadius={5}>
+                <Text style={styles.userInfo}>{`${this.state.UserData.first_name} ${this.state.UserData.last_name}`}</Text>
+                </Image>
+            </View>
+            <View style={styles.overlay}>
               <Image
-              source={{uri: link}}
-              style={styles.avatarBG}
-              blurRadius={0}>
-              </Image>
+                source={{uri: this.state.UserData.avatar}}
+                style={styles.avatar} />
+
+            </View>
           </View>
         :
-          <View style={styles.bgContainer}>
-            <Image source={require('../app/src/user_icon.png')}
+          <View>
+            <View style={styles.bgContainer}>
+                <Text style={styles.userInfo}>{`${this.state.UserData.first_name} ${this.state.UserData.last_name}`}</Text>
+            </View>
+            <View style={styles.overlay}>
+              <Image source={require('../app/src/user_icon.png')}
                 style={styles.avatar2} />
+            </View>
           </View>
         }
-        <View style={styles.form}>
-          <Form
-            ref="form"
-            type={User}
-            value={this.state.UserData}
-            options={this.options}
+        <View style={styles.avoidableList}>
+
+          <Text style={{marginBottom: 20}}>Allergens</Text>
+          <FlatList
+            data={this.state.UserData.avoidables.split(',')}
+            renderItem={({item}) =>
+
+              <Text style={styles.avoidable}>{item.toUpperCase()}</Text>
+
+            }
+
+            ItemSeparatorComponent={this.renderSeparator}
           />
+
           <TouchableHighlight style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableHighlight>
+
         </View>
-      </View>
+      </ScrollView>
     );
   }
 };
@@ -107,7 +143,7 @@ export default class Profile extends React.Component {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'flex-start',
-    padding: 30,
+    padding: 0,
     height: Dimensions.get('window').height,
     backgroundColor: '#ffffff',
   },
@@ -118,20 +154,21 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: '#F89E3A',
+    padding: 0,
+    width: Dimensions.get('window').width,
   },
-  avatarContainer: {
-    backgroundColor: '#ffffff'
+  overlay: {
+    width: Dimensions.get('window').width,
+    height: 250,
   },
-  form: {
-    marginTop: 210,
-    justifyContent: 'flex-start',
+  avoidableList: {
     alignSelf: 'center',
     paddingLeft: 30,
     paddingRight: 30,
-    paddingTop: 10,
+    paddingTop: 20,
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
     backgroundColor: '#ffffff',
+    paddingBottom: 20,
   },
   title: {
     fontSize: 30,
@@ -154,20 +191,42 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center'
   },
+  avoidable: {
+    fontSize: 12,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft: 20,
+  },
   avatarBG: {
     width: Dimensions.get('window').width,
     height: 250,
+    // alignSelf: 'center',
+    // marginBottom: 20,
+    // marginTop: 0,
+    // resizeMode: 'cover',
+  },
+  avatar: {
+    marginTop: 30,
+    width: 150,
+    height: 150,
     alignSelf: 'center',
-    marginBottom: 20,
-    marginTop: 0,
-    resizeMode: 'cover',
+    borderRadius: 75,
+    borderWidth: 5,
+    borderColor: '#ffffff',
+    justifyContent: 'center',
   },
   avatar2: {
-    marginTop: 10,
-    width: 200,
-    height: 200,
+    marginTop: 45,
+    width: 150,
+    height: 150,
     alignSelf: 'center',
     justifyContent: 'center',
+  },
+   userInfo: {
+    fontSize: 25,
+    color: '#ffffff',
+    alignSelf: 'center',
+    marginTop: 180
   },
   avatarName: {
     color: 'white',
