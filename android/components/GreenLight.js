@@ -83,7 +83,7 @@ export default class GreenLight extends Component {
 }
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor:'rgba(0,128,0, 0.8)',
+    backgroundColor: 'rgba(0,128,0, 0.8)',
     borderColor: '#d6d7da',
     borderWidth: 3,
     borderRadius: 20,
