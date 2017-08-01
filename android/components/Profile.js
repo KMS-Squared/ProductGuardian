@@ -43,12 +43,12 @@ export default class Profile extends React.Component {
 
   onPress () {
     // call getValue() to get the values of the form // if validation fails, value will be null
-    // console.log('body =====', JSON.stringify({
-    //     user_id: this.state.UserData.user_id,
-    //     first_name: this.state.UserData.first_name,
-    //     last_name: this.state.UserData.last_name,
-    //     avoidables: this.state.avoidableList
-    //   }));
+    console.log('body =====', JSON.stringify({
+        user_id: this.state.UserData.user_id,
+        first_name: this.state.UserData.first_name,
+        last_name: this.state.UserData.last_name,
+        avoidables: this.state.avoidableList
+      }));
     fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/edit-profile', {
       method: 'PUT',
       headers: {
@@ -78,6 +78,7 @@ export default class Profile extends React.Component {
   }
 
   addAvoidable() {
+<<<<<<< HEAD
     console.log(this.props)
     console.log('additem', this.state.addItem)
     // this.state.avoidableList.push(this.state.addItem);
@@ -85,6 +86,18 @@ export default class Profile extends React.Component {
     // this.setState({
     //   avoidableList: this.state.avoidableList
     // });
+=======
+    this.state.avoidableList.push(this.state.addItem);
+    let index = this.state.avoidableList.length;
+    this.state.avoidableList.splice(index-1, 1, this.state.addItem)
+    this._textInput.setNativeProps({text: ''});
+    let prev = this.state.avoidableList.slice(0);
+    // prev.push(this.state.addItem)
+    this.setState(() => ({
+      avoidableList: prev
+    }));
+
+>>>>>>> Finished rendering after adding item
   }
 
   renderSeparator () {
@@ -174,10 +187,10 @@ export default class Profile extends React.Component {
           <View style={{padding: 10, flexDirection: 'row',justifyContent: 'center'}}>
             <TextInput
               style={{height: 40, width: "75%", alignSelf: 'center'}}
-              value={this.state.addItem}
+              ref={component => this._textInput = component}
               placeholder="Add other allergens"
-              onChangeText={(addItem) => {this.setState({addItem: addItem})}
-              }
+              onChangeText={(addItem) => {this.setState({addItem: addItem})}}
+
              />
             <TouchableHighlight style={{width: 50}}onPress={this.addAvoidable.bind(this)} underlayColor='#99d9f4'>
             <Text style={{fontSize: 20, alignSelf: 'center', justifyContent:'center'}}>+</Text>
