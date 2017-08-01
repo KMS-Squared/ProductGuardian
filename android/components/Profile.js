@@ -18,11 +18,9 @@ import Swipeout from 'react-native-swipeout';
 
 let Form = t.form.Form;
 let User = t.struct({
-  // username: t.String,
   first_name: t.String,
   last_name: t.String,
   avoidables: t.String,
-  // password: t.String
 });
 
 export default class Profile extends React.Component {
@@ -36,17 +34,18 @@ export default class Profile extends React.Component {
     // here we are: define your domain model
     this.state = {
       UserData: {},
-      avoidableList: [],
+      avoidableList: null,
       addItem: '',
     }
   }
 
   onPress () {
     // call getValue() to get the values of the form // if validation fails, value will be null
+    const {state} = this.props.navigation;
     console.log('body =====', JSON.stringify({
-        user_id: this.state.UserData.user_id,
-        first_name: this.state.UserData.first_name,
-        last_name: this.state.UserData.last_name,
+        user_id: state.params.user_id,
+        first_name: state.params.first_name,
+        last_name: state.params.last_name,
         avoidables: this.state.avoidableList
       }));
     fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/edit-profile', {
@@ -56,37 +55,39 @@ export default class Profile extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        user_id: this.state.UserData.user_id,
-        first_name: this.state.UserData.first_name,
-        last_name: this.state.UserData.last_name,
-        avoidables: this.state.avoidableList
+        user_id: state.params.user_id,
+        first_name: state.params.first_name,
+        last_name: state.params.last_name,
+        avoidables: state.params.avoidables.join(',')
       })
     }).then((response) => {
       response.json().then((modifiedUser) => {
         console.log('modified user', modifiedUser);
-        AsyncStorage.setItem('userInfo', JSON.stringify(modifiedUser));
+        state.params.first_name = modifiedUser.first_name;
+        state.params.last_name = modifiedUser.last_name;
+        state.params.avoidables = modifiedUser.avoidables;
+        this.setState({avoidableList: modifiedUser.avoidables});
       }).catch((error) => {console.log('error modifying profile', error)});
     }).catch((error) => {console.log('error saving profile', error)});
     this.props.navigation.goBack();
   }
 
   deleteItem(index) {
-    this.state.avoidableList.splice(index, 1);
+    const {state} = this.props.navigation;
+    state.params.avoidables.splice(index, 1);
     this.setState({
-      avoidableList: this.state.avoidableList
+      avoidableList: state.params.avoidables
     });
   }
 
   addAvoidable() {
-    this.state.avoidableList.push(this.state.addItem);
-    let index = this.state.avoidableList.length;
-    this.state.avoidableList.splice(index-1, 1, this.state.addItem)
-    this._textInput.setNativeProps({text: ''});
-    let prev = this.state.avoidableList.slice(0);
-    // prev.push(this.state.addItem)
-    this.setState(() => ({
-      avoidableList: prev
-    }));
+    const {state} = this.props.navigation;
+    if (this.state.addItem.length !== 0) {
+      state.params.avoidables.push(this.state.addItem);
+      this._textInput.setNativeProps({text: ''});
+      let prev = state.params.avoidables.slice();
+      this.setState({avoidableList: prev});
+    }
   }
 
   renderSeparator () {
@@ -135,21 +136,22 @@ export default class Profile extends React.Component {
 
 
   render () {
+    const {state} = this.props.navigation;
     return (
       <ScrollView>
-        {this.state.UserData.avatar ?
+        {state.params.avatar ?
           <View>
             <View style={styles.bgContainer}>
                 <Image
-                source={{uri: this.state.UserData.avatar}}
+                source={{uri: state.params.avatar}}
                 style={styles.avatarBG}
                 blurRadius={5}>
-                <Text style={styles.userInfo}>{`${this.state.UserData.first_name} ${this.state.UserData.last_name}`}</Text>
+                <Text style={styles.userInfo}>{`${state.params.first_name} ${state.params.last_name}`}</Text>
                 </Image>
             </View>
             <View style={styles.overlay}>
               <Image
-                source={{uri: this.state.UserData.avatar}}
+                source={{uri: state.params.avatar}}
                 style={styles.avatar} />
 
             </View>
@@ -157,7 +159,7 @@ export default class Profile extends React.Component {
         :
           <View>
             <View style={styles.bgContainer}>
-                <Text style={styles.userInfo}>{`${this.state.UserData.first_name} ${this.state.UserData.last_name}`}</Text>
+                <Text style={styles.userInfo}>{`${state.params.first_name} ${state.params.last_name}`}</Text>
             </View>
             <View style={styles.overlay}>
               <Image source={require('../app/src/user_icon.png')}
@@ -168,7 +170,7 @@ export default class Profile extends React.Component {
         <View style={styles.avoidableList}>
           <Text style={{marginBottom: 10, fontSize: 20, alignSelf: 'center'}}>Allergen List</Text>
           <FlatList
-            data={this.state.avoidableList}
+            data={this.state.avoidableList || state.params.avoidables}
             renderItem={this.renderItem.bind(this)}
             ItemSeparatorComponent={this.renderSeparator}
           />
@@ -181,7 +183,7 @@ export default class Profile extends React.Component {
               onChangeText={(addItem) => {this.setState({addItem: addItem})}}
 
              />
-            <TouchableHighlight style={{width: 50}}onPress={this.addAvoidable.bind(this)} underlayColor='#99d9f4'>
+            <TouchableHighlight style={{width: 50}} onPress={this.addAvoidable.bind(this)} underlayColor='#99d9f4'>
             <Text style={{fontSize: 20, alignSelf: 'center', justifyContent:'center'}}>+</Text>
             </TouchableHighlight>
           </View>

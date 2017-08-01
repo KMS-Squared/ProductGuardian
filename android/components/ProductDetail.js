@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import { Modal, Text, TouchableHighlight, StyleSheet, View } from 'react-native';
+import { Modal, Text, TouchableHighlight, StyleSheet, View, Image} from 'react-native';
 import { Button } from 'react-native-elements';
 
 export default class ProductDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: true
+      modalVisible: true,
+      productInfo: {},
+      UserId: ''
     };
   }
 
   setModalVisible(bool) {
     this.setState({modalVisible: bool});
+    this.props.hideProductDetail();
   }
 
   render () {
@@ -20,20 +23,21 @@ export default class ProductDetail extends Component {
         visible={this.state.modalVisible}
         transparent={false}
         animationType={"slide"}
+        onRequestClose={() => {}}
       >
         <View style={styles.popup}>
-        <Text style={styles.title}>{this.props.title}</Text>
-        <Image
-          style={{width: 100, height: 200}}
-          source={this.props.productIproduct_image}/>
-        <Text>{this.props.productInfo.ingredients}
-        <button
-          large
-          icon={{name: 'done'}}
-          title='LARGE WITH RIGHT ICON'
-          color='#339966'
-          onPress={() => this.setModalVisible(false)}
-          >DONE</button>
+          <Text style={styles.title}>{this.props.productInfo.title}</Text>
+          <Image
+            style={{width: 100, height: 200}}
+            source={{uri: this.props.productInfo.image}}/>
+          {/*<Text>{this.props.productInfo.ingredients}</Text>*/}
+          <Button
+            large
+            icon={{name: 'done'}}
+            title='Hide details'
+            color='#339966'
+            onPress={() => this.setModalVisible(false)}
+            />
         </View>
       </Modal>
     );

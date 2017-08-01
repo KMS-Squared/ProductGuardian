@@ -18,7 +18,7 @@ export default class BarcodeScanner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      UserId: '',
+      //UserId: props.screenProps.user_id,
       showWarning: false,
       showGreenLight: false,
       showProductNotFound: false,
@@ -30,14 +30,7 @@ export default class BarcodeScanner extends Component {
     this.hideWarning = this.hideWarning.bind(this);
     this.hideGreenLight = this.hideGreenLight.bind(this);
     this.hideProductNotFound = this.hideProductNotFound.bind(this);
-  }
-
-  componentDidMount() {
-    // AsyncStorage.getItem('userInfo', (err, userInfo) => {
-    //   var user = JSON.parse(userInfo);
-    //   //var avoidables = user.avoidables.join(',');
-    //   this.setState({UserId: user.user_id});
-    // });
+    this.updateFavorites = this.updateFavorites.bind(this);
   }
 
   hideWarning() {
@@ -58,8 +51,12 @@ export default class BarcodeScanner extends Component {
     this.setState({readBarCode: _.once(this.scanBarCode.bind(this))});
   }
 
+  updateFavorites(itemInfo) {
+    this.props.screenProps.favorites.push(itemInfo);
+  }
+
   scanBarCode(event) {
-    console.log('user_id', this.state.UserId);
+    console.log('props', this.props.screenProps);
     console.log('upc', event.data);
     var upc;
     if (event.data.length > 12) {
@@ -68,7 +65,7 @@ export default class BarcodeScanner extends Component {
     } else {
       upc = event.data;
     }
-    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/status?user_id=${this.state.UserId}&upc=${upc}`)
+    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/status?user_id=${this.props.screenProps.user_id}&upc=${upc}`)
     .then((data) => {
       return data.json();
     })
@@ -101,19 +98,11 @@ export default class BarcodeScanner extends Component {
           onBarCodeRead={(event) => {this.state.readBarCode(event)}}>
         </Camera>
         {this.state.showWarning ? <Warning productInfo={this.state.productInfo} avoidables={this.state.foundAvoidables} revertCamera={this.hideWarning} style={styles.popup}/> : null}
-        {this.state.showGreenLight ? <GreenLight productInfo={this.state.productInfo} UserId={this.state.UserId} revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
+        {this.state.showGreenLight ? <GreenLight UserId={this.props.screenProps.user_id} productInfo={this.state.productInfo} revertCamera={this.hideGreenLight} updateFavorites={this.updateFavorites} style={styles.popup}/> : null}
         {this.state.showProductNotFound ? <ProductNotFound productInfo={this.state.productInfo} revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
       </View>
     );
   }
-
-  // takePicture() {
-  //   const options = {};
-  //   //options.location = ...
-  //   this.camera.capture({metadata: options})
-  //     .then((data) => console.log(data))
-  //     .catch(err => console.error(err));
-  // }
 }
 
 const styles = StyleSheet.create({
