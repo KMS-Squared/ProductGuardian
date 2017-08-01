@@ -88,7 +88,6 @@
 //   mode: 'modal'
 // });
 
-
 // const styles = StyleSheet.create({
 //   icon: {
 //     height: 25,

@@ -26,7 +26,7 @@ export default class GreenLight extends Component {
           user_id: this.props.UserId,
           title: this.props.productInfo.title,
           image: this.props.productInfo.image,
-          ingredients: this.props.productInfo.ingredients.join(),
+          ingredients: this.props.productInfo.ingredients.join(), /*Resolve issues with ingredient list when joined*/
         })
       })
     .then((response) => {
