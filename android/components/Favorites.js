@@ -31,7 +31,7 @@ export default class Favorites extends React.Component {
     );
   }
 
-  deleteFavorite (item) {
+  deleteFavorite(item) {
     const {state} = this.props.navigation;
     fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites`, {
       method: 'DELETE',
@@ -69,15 +69,16 @@ export default class Favorites extends React.Component {
   }
 
   render() {
+    const {state} = this.props.navigation;
     return (
       <View>
         <FlatList
           ListHeaderComponent={this.renderHeader}
-          data={this.state.favorites}
+          data={state.params.favorites}
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
         />
-        {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={this.state.UserId}/> : null}
+        {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={this.state.UserId} deleteFavorite={this.deleteFavorite}/> : null}
       </View>
     );
   }

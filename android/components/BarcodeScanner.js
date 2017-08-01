@@ -30,6 +30,7 @@ export default class BarcodeScanner extends Component {
     this.hideWarning = this.hideWarning.bind(this);
     this.hideGreenLight = this.hideGreenLight.bind(this);
     this.hideProductNotFound = this.hideProductNotFound.bind(this);
+    this.updateFavorites = this.updateFavorites.bind(this);
   }
 
   hideWarning() {
@@ -48,6 +49,10 @@ export default class BarcodeScanner extends Component {
     this.setState({showProductNotFound: false});
     //Reset the readBarCode state so that it can be triggered for a new scan
     this.setState({readBarCode: _.once(this.scanBarCode.bind(this))});
+  }
+
+  updateFavorites(itemInfo) {
+    this.props.screenProps.favorites.push(itemInfo);
   }
 
   scanBarCode(event) {
@@ -91,7 +96,7 @@ export default class BarcodeScanner extends Component {
           onBarCodeRead={(event) => {this.state.readBarCode(event)}}>
         </Camera>
         {this.state.showWarning ? <Warning productInfo={this.state.productInfo} avoidables={this.state.foundAvoidables} revertCamera={this.hideWarning} style={styles.popup}/> : null}
-        {this.state.showGreenLight ? <GreenLight UserId={this.props.screenProps.user_id} productInfo={this.state.productInfo} revertCamera={this.hideGreenLight} style={styles.popup}/> : null}
+        {this.state.showGreenLight ? <GreenLight UserId={this.props.screenProps.user_id} productInfo={this.state.productInfo} revertCamera={this.hideGreenLight} updateFavorites={this.updateFavorites} style={styles.popup}/> : null}
         {this.state.showProductNotFound ? <ProductNotFound productInfo={this.state.productInfo} revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
       </View>
     );

@@ -11,6 +11,7 @@ import Favorites from './android/components/Favorites';
 import HomeScreen from './android/components/Home';
 import Shopping from './android/components/ShoppingList';
 import BarcodeScanner from './android/components/BarcodeScanner';
+import GreenLight from './android/components/GreenLight';
 import Profile from './android/components/Profile';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import Auth0 from 'react-native-auth0';
@@ -111,6 +112,12 @@ const SubScreens = StackNavigator({
       title: 'Shopping',
     }
   },
+  GreenLight: {
+    screen: GreenLight,
+    navigationOptions: {
+      title: 'GreenLight'
+    }
+  }
 }, {
   headerMode: 'none',
   mode: 'modal'

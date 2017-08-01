@@ -30,14 +30,14 @@ export default class ProductDetail extends Component {
           <Image
             style={{width: 100, height: 200}}
             source={{uri: this.props.productInfo.image}}/>
-          <Text>INGREDIENTS GO HERE</Text>
+          {/*<Text>{this.props.productInfo.ingredients}</Text>*/}
           <Button
             large
             icon={{name: 'done'}}
-            title='LARGE WITH RIGHT ICON'
+            title='Hide details'
             color='#339966'
             onPress={() => this.setModalVisible(false)}
-            >DONE</Button>
+            />
         </View>
       </Modal>
     );

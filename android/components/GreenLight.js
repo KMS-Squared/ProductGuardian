@@ -14,8 +14,7 @@ export default class GreenLight extends Component {
   }
 
   sendToFavorites() {
-    console.log(this.props, 'PROPS');
-    console.log('favorites called');
+    console.log();
     fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites',
       {
         method: 'POST',
@@ -26,12 +25,18 @@ export default class GreenLight extends Component {
         body: JSON.stringify({
           user_id: this.props.UserId,
           title: this.props.productInfo.title,
-          image: this.props.productInfo.product_image,
-          info: this.props.productInfo.product_upc,
+          image: this.props.productInfo.image,
+          ingredients: this.props.productInfo.ingredients.join(),
         })
       })
     .then((response) => {
-      console.log('RESPONSE', response);
+      var productData = {
+        user_id: this.props.UserId,
+        title: this.props.productInfo.title,
+        image: this.props.productInfo.image,
+        ingredients: this.props.productInfo.ingredients.join(),
+      };
+      this.props.updateFavorites(productData);
       return response.json();
     })
     .then(() => this.props.revertCamera())

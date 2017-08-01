@@ -4,7 +4,7 @@ import {Icon} from 'react-native-elements';
 
 
 const mockData = [
-  {title: "Cambell's Chicken Noodle Soup", avoidable: "whey"},
+  {title: "Campbell's Chicken Noodle Soup", avoidable: "whey"},
   {title: "LaCroix Grapefruit Sparkling Water", avoidable: "aspartame"},
   {title: "Nature Valley Nut Bar", avoidable: "aspartame"},
   {title: "Dentyne Fire Gum", avoidable: "whey"}];
@@ -22,21 +22,7 @@ export default class ShoppingList extends React.Component {
     this.renderHeader = this.renderHeader.bind(this);
   }
 
-  componentDidMount() {
-    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shoppingList')
-    //   .then(response => response.json())
-    //   .then(listItems => {
-    //     listItems.sort((obj1, obj2) => {
-    //       obj1.title - obj2.title
-    //     });
-    //   })
-    //   .then (this.setState({listItems})
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-  }
-
-  renderHeader () {
+  renderHeader() {
     return (
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Shopping List</Text>
