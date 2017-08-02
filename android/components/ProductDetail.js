@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Text, TouchableHighlight, StyleSheet, View, Image} from 'react-native';
+import { Modal, Text, TouchableHighlight, StyleSheet, View, Image, Dimensions} from 'react-native';
 import { Icon } from 'react-native-elements';
+
+let winSize = Dimensions.get('window');
 
 export default class ProductDetail extends Component {
   constructor(props) {
@@ -37,7 +39,7 @@ export default class ProductDetail extends Component {
         <View style={styles.popup}>
           <Text style={styles.title}>{this.props.productInfo.title}</Text>
           <Image
-            style={{width: 150, height: 300, alignSelf: 'center'}}
+            style={{width: winSize.width, height: 300, alignSelf: 'center'}}
             source={{uri: this.props.productInfo.image}}/>
           <Text style={styles.ingredients}>{ingredients}</Text>
           <TouchableHighlight style={styles.button} onPress={() => this.setModalVisible(false)} underlayColor='#99d9f4'>
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     borderColor: '#339966',
     borderWidth: 1,
     borderRadius: 8,
-    marginTop: 40,
+    marginTop: 10,
     marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
