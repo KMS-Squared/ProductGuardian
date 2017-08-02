@@ -1,7 +1,9 @@
 import React, {component} from 'react';
-import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, AsyncStorage } from 'react-native';
+import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, AsyncStorage, Dimensions } from 'react-native';
 import {Icon} from 'react-native-elements';
 import ProductDetail from './ProductDetail';
+
+let winSize = Dimensions.get('window');
 
 export default class Favorites extends React.Component {
   constructor(props) {
@@ -34,6 +36,32 @@ export default class Favorites extends React.Component {
 
   addShoppingList (item) {
     console.log('addShoppingList', item);
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shoppingList',
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: this.props.UserId,
+          product_id: this.props.productInfo._id
+        })
+      })
+    .then((response) => {
+      var productData = {
+        user_id: this.props.UserId,
+        title: this.props.productInfo.title,
+        image: this.props.productInfo.image,
+        ingredients: this.props.productInfo.ingredients
+      };
+      this.props.updateFavorites(productData);
+      return response.json();
+    })
+    .then(() => this.props.revertCamera())
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
   deleteFavorite(item) {
@@ -65,7 +93,7 @@ export default class Favorites extends React.Component {
     return (
       <View style={styles.row}>
         <View>
-          <Icon name='add-shopping-cart' color='#339966' onPress={() => this.addShoppingList(item)}/>
+          <Icon name='add-shopping-cart' color='#339966' style={styles.shoppingCart} onPress={() => this.addShoppingList(item)}/>
         </View>
         <TouchableHighlight onPress={() => this.setState({showProductDetail: true, productInfo: item})}>
           <Text style={styles.title}>{title}</Text>
@@ -123,12 +151,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   title: {
-    marginLeft: 9,
-    fontSize: 19,
-    paddingLeft: 5,
+    marginLeft: 5,
+    fontSize: 16,
+    width: winSize.width * .75,
+    textAlign: 'left'
   },
   deleteButton: {
     height: 28,
     paddingRight: 5
+  },
+  shoppingCart: {
+    marginLeft: 5
   }
+
 });
