@@ -12,11 +12,11 @@ export default class Favorites extends React.Component {
       showProductDetail: false,
       productInfo: {}
     };
-
     this.deleteFavorite = this.deleteFavorite.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.hideProductDetail = this.hideProductDetail.bind(this);
+    this.addShoppingList = this.addShoppingList.bind(this);
   }
 
   hideProductDetail () {
@@ -32,8 +32,13 @@ export default class Favorites extends React.Component {
     );
   }
 
+  addShoppingList (item) {
+    console.log('addShoppingList', item);
+  }
+
   deleteFavorite(item) {
     const {state} = this.props.navigation;
+
     fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites`, {
       method: 'DELETE',
       headers: {
@@ -59,6 +64,9 @@ export default class Favorites extends React.Component {
     const title = `${item.title}`;
     return (
       <View style={styles.row}>
+        <View>
+          <Icon name='add-shopping-cart' color='#339966' onPress={() => this.addShoppingList(item)}/>
+        </View>
         <TouchableHighlight onPress={() => this.setState({showProductDetail: true, productInfo: item})}>
           <Text style={styles.title}>{title}</Text>
         </TouchableHighlight>

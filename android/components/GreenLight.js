@@ -15,6 +15,7 @@ export default class GreenLight extends Component {
   }
 
   sendToFavorites() {
+    console.log(this.props.productInfo, 'Product Info');
     fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites',
       {
         method: 'POST',
@@ -24,9 +25,7 @@ export default class GreenLight extends Component {
         },
         body: JSON.stringify({
           user_id: this.props.UserId,
-          title: this.props.productInfo.title,
-          image: this.props.productInfo.image,
-          ingredients: this.props.productInfo.ingredients.join(), /*Resolve issues with ingredient list when joined*/
+          product_id: this.props.productInfo._id
         })
       })
     .then((response) => {
@@ -34,7 +33,7 @@ export default class GreenLight extends Component {
         user_id: this.props.UserId,
         title: this.props.productInfo.title,
         image: this.props.productInfo.image,
-        ingredients: this.props.productInfo.ingredients.join(),
+        ingredients: this.props.productInfo.ingredients
       };
       this.props.updateFavorites(productData);
       return response.json();
@@ -83,7 +82,7 @@ export default class GreenLight extends Component {
 }
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor:'rgba(0,128,0, 0.8)',
+    backgroundColor: 'rgba(0,128,0, 0.8)',
     borderColor: '#d6d7da',
     borderWidth: 3,
     borderRadius: 20,
