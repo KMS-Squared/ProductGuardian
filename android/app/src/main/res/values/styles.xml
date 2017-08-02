@@ -5,7 +5,41 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <string name="com_auth0_database_login_title">ProductGuardian</string>
-    <string name="com_auth0_social_db_title">ProductGuardian</string>
-    <string name="com_auth0_db_login_btn_text">LOGIN</string>
+    <style name="PGLock.Theme" parent="Lock.Theme">
+        <item name="spbStyle">@style/Lock.Theme.ProgressBarHorizontal</item>
+        <item name="Auth0.PrimaryButtonStyle">@style/Lock.Theme.PrimaryButton</item>
+        <item name="Auth0.SecondaryButtonStyle">@style/Lock.Theme.SecondaryButton</item>
+        <item name="Auth0.CredentialField.Email">@style/Lock.Theme.CredentialField.Email</item>
+        <item name="Auth0.CredentialField.Password">@style/Lock.Theme.CredentialField.Password</item>
+        <item name="Auth0.CredentialField.Username">@style/Lock.Theme.CredentialField.Username</item>
+        <item name="Auth0.CredentialBox">@style/Lock.Theme.CredentialBox</item>
+        <item name="Auth0.Message">@style/Lock.Theme.Message</item>
+        <item name="Auth0.Background">@color/com_auth0_lock_background</item>
+        <item name="Auth0.Title.Icon">@style/PGLock.Theme.Title.Icon</item>
+        <item name="Auth0.Title.Text">@style/Lock.Theme.Title.Text</item>
+        <item name="Auth0.Separator.Color">@color/com_auth0_credential_box_border</item>
+        <item name="Auth0.CredentialField">@style/Lock.Theme.CredentialField</item>
+        <item name="Auth0.GridView.Small">@style/Lock.Theme.Social.GridView</item>
+    </style>
+
+    <style name="PGLock.Theme.Title"/>
+    <style name="PGLock.Theme.Title.Icon">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">300dp</item>
+        <item name="android:layout_marginTop">@dimen/com_auth0_title_lock_margin_top</item>
+        <item name="android:src">@drawable/pglogo</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:background">@drawable/com_auth0_icon_background</item>
+        <item name="android:cropToPadding">false</item>
+        <item name="android:paddingLeft">@dimen/com_auth0_title_lock_image_horizontal_padding</item>
+        <item name="android:paddingRight">@dimen/com_auth0_title_lock_image_horizontal_padding</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingTop">@dimen/com_auth0_title_lock_image_vertical_padding</item>
+    </style>
+    <dimen name="com_auth0_title_lock_text_size">0sp</dimen>
+    <color name="com_auth0_title_lock_icon_background">#ffffffff</color>
+    <string name="com_auth0_social_only_title"></string>
+    <color name="com_auth0_primary_button_normal_background">#339966</color>
+    <color name="com_auth0_primary_button_highlighted_background">#339966</color>
 </resources>
