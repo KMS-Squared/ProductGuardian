@@ -90,9 +90,47 @@ class ProductGuardian extends React.Component {
   }
 }
 
-const SubScreens = StackNavigator({
-  ProductGuardian: {
+const SubScreens = TabNavigator({
+  Home: {
     screen: HomeScreen,
+    navigationOptions: {
+      tabBarLabel: 'Home',
+      tabBarIcon: ({ tintColor }) => (
+      <Image source={require('./android/app/src/home_icon.png')}
+        style={styles.icon}
+      />
+    )}
+  },
+  Camera: {
+    screen: BarcodeScanner,
+    navigationOptions: {
+      tabBarLabel: 'Scan',
+      tabBarIcon: ({ tintColor }) => (
+      <Image source={require('./android/app/src/barcode_scanner.png')}
+        style={styles.icon}
+      />
+    )}
+  },
+}, {
+  tabBarPosition: 'bottom',
+  tabBarOptions: {
+    style: {
+      backgroundColor: '#339966',
+      padding: 0,
+    },
+    showIcon: true,
+    showLabel: false,
+    tabStyle: {
+      padding: 5,
+      height: 60,
+      width: Dimensions.get('window').width/2
+    }
+  },
+});
+
+const App = StackNavigator({
+  SubScreens: {
+    screen: SubScreens,
   },
   Profile: {
     screen: Profile,
@@ -123,46 +161,6 @@ const SubScreens = StackNavigator({
   mode: 'modal'
 });
 
-const App = TabNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: {
-      tabBarLabel: 'Home',
-      tabBarIcon: ({ tintColor }) => (
-      <Image source={require('./android/app/src/home_icon.png')}
-        style={styles.icon}
-      />
-    )}
-  },
-  Camera: {
-    screen: BarcodeScanner,
-    navigationOptions: {
-      tabBarLabel: 'Scan',
-      tabBarIcon: ({ tintColor }) => (
-      <Image source={require('./android/app/src/barcode_scanner.png')}
-        style={styles.icon}
-      />
-    )}
-  },
-  FloatingButtons: {
-    screen: SubScreens,
-  },
-}, {
-  tabBarPosition: 'bottom',
-  tabBarOptions: {
-    style: {
-      backgroundColor: '#339966',
-      padding: 0,
-    },
-    showIcon: true,
-    showLabel: false,
-    tabStyle: {
-      padding: 5,
-      height: 60,
-      width: Dimensions.get('window').width/2
-    }
-  },
-});
 
 const styles = StyleSheet.create({
   icon: {
