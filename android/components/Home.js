@@ -37,10 +37,10 @@ export default class HomeScreen extends Component {
         </View>
     {/*******OVERLAY*******/}
         <View style={styles.overlay}>
-          <Image source={require('../app/src/pg_home.png')}
+          <Image source={require('../app/src/pg_full.png')}
             style={styles.logo} />
           <Text style={styles.welcome}>
-          ProductGuardian
+
           </Text>
           <Text style={styles.instructions}>
             To get started, open the camera and begin scanning product barcodes.
@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   logo: {
-    width: 220,
-    height: 144,
+    width: 225,
+    height: 194,
     marginBottom: 10,
     marginTop: 50,
     alignSelf: 'center'

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import t from 'tcomb-form-native';
 import {
   AppRegistry,
   AsyncStorage,
@@ -15,13 +14,6 @@ import {
 } from 'react-native';
 import FAIcons from 'react-native-vector-icons/FontAwesome';
 import Swipeout from 'react-native-swipeout';
-
-let Form = t.form.Form;
-let User = t.struct({
-  first_name: t.String,
-  last_name: t.String,
-  avoidables: t.String,
-});
 
 export default class Profile extends React.Component {
   static navigationOptions = {
