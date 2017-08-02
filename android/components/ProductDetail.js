@@ -21,21 +21,25 @@ export default class ProductDetail extends Component {
     let ingredientList = this.props.productInfo.ingredients;
     console.log('ingredientList', ingredientList);
     let ingredients = ingredientList.reduce((label, ingredient) => {
-      return label += ingredient;
+      if (ingredient === ',') {
+        return label += (ingredient + ' ');
+      } else {
+        return label += ingredient;
+      }
     }, '');
     return (
       <Modal
         visible={this.state.modalVisible}
         transparent={false}
-        animationType={"slide"}
+        animationType={'slide'}
         onRequestClose={() => {}}
       >
         <View style={styles.popup}>
           <Text style={styles.title}>{this.props.productInfo.title}</Text>
           <Image
-            style={{width: 150, height: 300}}
+            style={{width: 150, height: 300, alignSelf: 'center'}}
             source={{uri: this.props.productInfo.image}}/>
-          <Text>{ingredients}</Text>
+          <Text style={styles.ingredients}>{ingredients}</Text>
           <TouchableHighlight style={styles.button} onPress={() => this.setModalVisible(false)} underlayColor='#99d9f4'>
             <View>
               <Icon color='white' name='done' />
@@ -50,17 +54,19 @@ export default class ProductDetail extends Component {
 const styles = StyleSheet.create({
   popup: {
     backgroundColor:'white',
-    borderColor: '#d6d7da',
-    borderWidth: 3,
-    borderRadius: 20,
     justifyContent: 'center',
     overflow: 'visible',
     flex: 1
   },
   title: {
+    textAlign: 'center',
     fontSize: 24,
     color: 'black',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    marginTop: 10
   },
   button: {
     height: 40,
@@ -73,4 +79,10 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center'
   },
+  ingredients: {
+    justifyContent: 'center',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10
+  }
 });
