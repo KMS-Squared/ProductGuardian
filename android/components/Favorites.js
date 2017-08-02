@@ -32,6 +32,10 @@ export default class Favorites extends React.Component {
     );
   }
 
+  addShoppingList (item) {
+    console.log('addShoppingList', item);
+  }
+
   deleteFavorite(item) {
     const {state} = this.props.navigation;
 

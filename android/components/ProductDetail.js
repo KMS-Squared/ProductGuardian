@@ -18,6 +18,11 @@ export default class ProductDetail extends Component {
   }
 
   render () {
+    let ingredientList = this.props.productInfo.ingredients;
+    console.log('ingredientList', ingredientList);
+    let ingredients = ingredientList.reduce((label, ingredient) => {
+      return label += ingredient;
+    }, '');
     return (
       <Modal
         visible={this.state.modalVisible}
@@ -30,7 +35,7 @@ export default class ProductDetail extends Component {
           <Image
             style={{width: 150, height: 300}}
             source={{uri: this.props.productInfo.image}}/>
-          <Text>INGREDIENTS GO HERE</Text>
+          <Text>{ingredients}</Text>
           <TouchableHighlight style={styles.button} onPress={() => this.setModalVisible(false)} underlayColor='#99d9f4'>
             <View>
               <Icon color='white' name='done' />
