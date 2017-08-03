@@ -45,7 +45,8 @@ export default class Favorites extends React.Component {
       <CardView
           cardElevation={5}
           cardMaxElevation={3}
-          cornerRadius={0}>
+          cornerRadius={0}
+          style={{width: "120%", left: -7, top: -10, backgroundColor: '#339966'  }}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Favorites</Text>
           </View>
