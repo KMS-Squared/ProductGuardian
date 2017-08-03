@@ -16,6 +16,7 @@ import ActionButton from 'react-native-action-button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FAIcons from 'react-native-vector-icons/FontAwesome';
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default class HomeScreen extends Component {
 
@@ -46,18 +47,18 @@ export default class HomeScreen extends Component {
             To get started, open the camera and begin scanning product barcodes.
           </Text>
 
-          <ActionButton buttonColor="rgba(231,76,60,1)"
+          <ActionButton buttonColor="rgba(237,126,2,1)"
             icon={<Ionicons name="md-more" style={styles.actionButtonIcon} />}
             offsetX={15}
             offsetY={10}
             degrees={90}>
-            <ActionButton.Item buttonColor='#339966' title="Profile" onPress={() => {navigate('Profile', this.props.screenProps)}}>
+            <ActionButton.Item buttonColor='#127cc3' title="Profile" textStyle={{fontSize: 13}} onPress={() => {navigate('Profile', this.props.screenProps)}}>
               <FAIcons name="user" style={styles.actionButtonIcon} />
             </ActionButton.Item>
-            <ActionButton.Item buttonColor='#f0c420' title="Favorites" onPress={() => navigate('Favorites', this.props.screenProps)}>
-              <FAIcons name="star" style={styles.actionButtonIcon} />
+            <ActionButton.Item buttonColor='#db3915' title="Favorites" textStyle={{fontSize: 13}} onPress={() => navigate('Favorites', this.props.screenProps)}>
+              <MIcons name="favorite" style={styles.actionButtonIcon} />
             </ActionButton.Item>
-            <ActionButton.Item buttonColor='#0a86ff' title="Shopping List" onPress={() => navigate('Shopping', this.props.screenProps)}>
+            <ActionButton.Item buttonColor='#339933' title="Shopping List" textStyle={{fontSize: 13}}onPress={() => navigate('Shopping', this.props.screenProps)}>
               <FAIcons name="shopping-cart" style={styles.actionButtonIcon} />
             </ActionButton.Item>
           </ActionButton>
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     padding: 0,
     height: "100%",
+    opacity: 0.8,
     width: Dimensions.get('window').width,
   },
   bg: {
@@ -96,11 +98,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   logo: {
-    width: 225,
-    height: 194,
+    width: 280,
+    height: 220,
     marginBottom: 10,
     marginTop: 50,
-    alignSelf: 'center'
+    alignSelf: 'center',
+    resizeMode: 'contain'
   },
   welcome: {
     fontSize: 35,
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     color: '#777777',
-    paddingTop: "5%",
+    paddingTop: "2%",
     marginBottom: 5,
     paddingLeft: 30,
     paddingRight: 30
