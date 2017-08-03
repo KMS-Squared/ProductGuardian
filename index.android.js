@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   AppRegistry,
+  AsyncStorage,
   Dimensions,
   StyleSheet,
   Image,
@@ -36,54 +37,100 @@ class ProductGuardian extends React.Component {
     );
   }
 
+  _checkUserSignedIn(callback){
+    let keys = ['user', 'token'];
+    AsyncStorage.multiGet(keys)
+    .then((values) => {
+      callback(values);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   componentWillMount() {
-    console.log('before mount');
-    lock.show({}, (err, profile, token) => {
-      console.log('profile ', profile);
-      console.log('token ', token);
-      //Later, we'll set the user's token in Asyncstorage here to decide later on whether they should go to the home page or the lock screen
-      fetch(server + 'login', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          user_id: profile.userId
-        })
-      }).then((response) => {
-        response.json().then((userData) => {
-          if (!userData) /*if the user id was not found in our database */{
-            fetch(server + 'signup', {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                user_id: profile.userId,
-                first_name: profile.given_name,
-                last_name: profile.family_name,
-                email: profile.email,
-                avatar: profile.picture,
-              })
-            }).then((newUser) => {
-                newUser.json().then((userData) => {
-                  console.log('new user data ', userData);
-                  this.setState({userData: userData});
-                }).catch((err) => {
+    this._checkUserSignedIn((userLoginInfo) => {
+      console.log(userLoginInfo);
+      //If there's no userId set or no token for the user
+      if (userLoginInfo[0][1] === null || userLoginInfo[1][1] === null) {
+        lock.show({}, (err, profile, token) => {
+          console.log('profile ', profile);
+          console.log('token ', token);
+          fetch(server + 'login', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              user_id: profile.userId
+            })
+          }).then((response) => {
+            response.json().then((userData) => {
+              if (!userData) /*if the user id was not found in our database */{
+                fetch(server + 'signup', {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    user_id: profile.userId,
+                    first_name: profile.given_name,
+                    last_name: profile.family_name,
+                    email: profile.email,
+                    avatar: profile.picture,
+                  })
+                }).then((newUser) => {
+                    newUser.json().then((userData) => {
+                      console.log('new user data ', userData);
+                      this.setState({userData: userData});
+                      AsyncStorage.multiSet([['user', userData.user_id], ['token', token.accessToken]])
+                      .then(() => {
+                        console.log('tokens set');
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                    }).catch((err) => {
+                      console.log(err);
+                    });
+                });
+              } else /*if the user was found in our database */{
+                console.log('existing user data ', userData);
+                this.setState({userData: userData});
+                AsyncStorage.multiSet([['user', userData.user_id], ['token', token.accessToken]])
+                .then(() => {
+                  console.log('tokens set');
+                })
+                .catch((err) => {
                   console.log(err);
                 });
+              }
             });
-          } else /*if the user was found in our database */{
+          }).catch((err) => {
+            console.log(err);
+          });
+        });
+      } else /*If the user had a token saved in AsyncStorage already, send them into the app */{
+        fetch(server + 'login', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user_id: userLoginInfo[0][1]
+          })
+        }).then((response) => {
+          response.json().then((userData) => {
             console.log('existing user data ', userData);
             this.setState({userData: userData});
-            //Render the home page
-          }
+          });
+        }).catch((err) => {
+          console.log(err);
         });
-      }).catch((err) => {
-        console.log(err);
-      });
+      }
     });
   }
 }
