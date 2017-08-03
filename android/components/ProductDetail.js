@@ -41,7 +41,8 @@ export default class ProductDetail extends Component {
             <CardView
               cardElevation={3}
               cardMaxElevation={0}
-              cornerRadius={0}>
+              cornerRadius={0}
+              style={{backgroundColor: '#FFFFFF'}}>
             <Text style={styles.title}>{this.props.productInfo.title}</Text>
 
             <Image
@@ -65,7 +66,7 @@ export default class ProductDetail extends Component {
 
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor:'white',
+    backgroundColor:'#FFFFFF',
     justifyContent: 'center',
     overflow: 'visible',
     flex: 1
@@ -73,12 +74,13 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     fontSize: 20,
-    color: 'black',
+    color: '#7a7a7a',
+    fontWeight: 'bold',
     alignSelf: 'center',
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 10,
-    marginTop: 10
+    marginTop: 20
   },
   button: {
     width: "80%",
