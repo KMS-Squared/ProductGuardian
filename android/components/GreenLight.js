@@ -33,6 +33,7 @@ export default class GreenLight extends Component {
         user_id: this.props.UserId,
         title: this.props.productInfo.title,
         image: this.props.productInfo.image,
+        _id: this.props.productInfo._id,
         ingredients: this.props.productInfo.ingredients
       };
       this.props.updateFavorites(productData);
