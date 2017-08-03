@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, Text, TouchableHighlight, StyleSheet, View, Image, Dimensions} from 'react-native';
+import { Modal, Text, TouchableHighlight, StyleSheet, View, Image, Dimensions, ScrollView} from 'react-native';
 import { Icon } from 'react-native-elements';
+import CardView from 'react-native-cardview'
 
 let winSize = Dimensions.get('window');
 
@@ -36,18 +37,27 @@ export default class ProductDetail extends Component {
         animationType={'slide'}
         onRequestClose={() => {}}
       >
-        <View style={styles.popup}>
-          <Text style={styles.title}>{this.props.productInfo.title}</Text>
-          <Image
-            style={{width: winSize.width, height: 300, alignSelf: 'center'}}
-            source={{uri: this.props.productInfo.image}}/>
-          <Text style={styles.ingredients}>{ingredients}</Text>
-          <TouchableHighlight style={styles.button} onPress={() => this.setModalVisible(false)} underlayColor='#99d9f4'>
-            <View>
-              <Icon color='white' name='done' />
-            </View>
-          </TouchableHighlight>
-        </View>
+          <View style={styles.popup}>
+            <CardView
+              cardElevation={3}
+              cardMaxElevation={0}
+              cornerRadius={0}>
+            <Text style={styles.title}>{this.props.productInfo.title}</Text>
+
+            <Image
+              style={{width: winSize.width/2, height: 150, alignSelf: 'center', resizeMode: 'contain', marginBottom: 10}}
+              source={{uri: this.props.productInfo.image}}/>
+            </CardView>
+            <ScrollView>
+              <Text style={{marginLeft: 20, marginTop: 10, fontSize: 20}}>Ingredients</Text>
+              <Text style={styles.ingredients}>{ingredients}</Text>
+              <TouchableHighlight style={styles.button} onPress={() => this.setModalVisible(false)} underlayColor='#99d9f4'>
+                <View>
+                  <Icon color='white' name='done' />
+                </View>
+              </TouchableHighlight>
+            </ScrollView>
+          </View>
       </Modal>
     );
   }
@@ -62,29 +72,30 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: 'center',
-    fontSize: 24,
+    fontSize: 20,
     color: 'black',
     alignSelf: 'center',
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 20,
+    marginRight: 20,
     marginBottom: 10,
     marginTop: 10
   },
   button: {
+    width: "80%",
     height: 40,
     backgroundColor: '#339966',
     borderColor: '#339966',
     borderWidth: 1,
     borderRadius: 8,
     marginTop: 10,
-    marginBottom: 10,
-    alignSelf: 'stretch',
+    marginBottom: 20,
+    alignSelf: 'center',
     justifyContent: 'center'
   },
   ingredients: {
     justifyContent: 'center',
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 30,
+    marginRight: 30,
     marginTop: 10
   }
 });

@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import FAIcons from 'react-native-vector-icons/FontAwesome';
 import Swipeout from 'react-native-swipeout';
+import CardView from 'react-native-cardview'
 
 export default class Profile extends React.Component {
   static navigationOptions = {
@@ -129,7 +130,12 @@ export default class Profile extends React.Component {
     const {state} = this.props.navigation;
     return (
       <ScrollView>
+       <CardView
+              cardElevation={5}
+              cardMaxElevation={0}
+              cornerRadius={0}>
         {state.params.avatar ?
+
           <View>
             <View style={styles.bgContainer}>
                 <Image
@@ -157,6 +163,7 @@ export default class Profile extends React.Component {
             </View>
           </View>
         }
+        </CardView>
         <View style={styles.avoidableList}>
           <Text style={{marginBottom: 10, fontSize: 20, alignSelf: 'center'}}>Allergen List</Text>
           <FlatList

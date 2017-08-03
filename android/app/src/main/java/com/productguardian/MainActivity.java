@@ -1,5 +1,5 @@
 package com.productguardian;
-
+import com.reactlibrary.RNCardViewPackage;
 import com.facebook.react.ReactActivity;
 import com.horcrux.svg.SvgPackage;
 

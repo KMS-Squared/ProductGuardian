@@ -3,6 +3,7 @@ package com.productguardian;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactlibrary.RNCardViewPackage;
 import com.auth0.lock.react.LockReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.auth0.react.A0Auth0Package;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCardViewPackage(),
             new LockReactPackage(),
             new VectorIconsPackage(),
             new A0Auth0Package(),
