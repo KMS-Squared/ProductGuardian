@@ -1,7 +1,8 @@
 import React, {component} from 'react';
-import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, AsyncStorage, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, AsyncStorage, Dimensions, ScrollView } from 'react-native';
 import {Icon} from 'react-native-elements';
 import ProductDetail from './ProductDetail';
+import CardView from 'react-native-cardview'
 
 let winSize = Dimensions.get('window');
 
@@ -27,10 +28,15 @@ export default class Favorites extends React.Component {
 
   renderHeader () {
     return (
-      <View style={styles.headerContainer}>
-        <Text style={styles.headerText}>Add to Shopping List</Text>
-        <Text style={styles.headerText}>Delete</Text>
-      </View>
+      <CardView
+          cardElevation={5}
+          cardMaxElevation={3}
+          cornerRadius={0}>
+          <View style={styles.headerContainer}>
+            <Text style={styles.headerText}>Favorites</Text>
+          </View>
+      </CardView>
+
     );
   }
 
@@ -88,9 +94,22 @@ export default class Favorites extends React.Component {
     });
   }
 
+  renderSeparator () {
+    return (
+      <View
+        style={{
+          height: 2,
+          width: Dimensions.get('window').width,
+          backgroundColor: "#CED0CE",
+        }}
+      />
+    );
+  }
+
   renderItem({item}) {
     const title = `${item.title}`;
     return (
+      <ScrollView>
       <View style={styles.row}>
         <View>
           <Icon name='add-shopping-cart' color='#339966' style={styles.shoppingCart} onPress={() => this.addShoppingList(item)}/>
@@ -102,18 +121,21 @@ export default class Favorites extends React.Component {
           <Icon color='#F89E3A' name='delete-forever' style={styles.deleteButton} onPress={() => this.deleteFavorite(item)}/>
         </View>
       </View>
+      </ScrollView>
     );
   }
 
   render() {
     const {state} = this.props.navigation;
     return (
+
       <View>
         <FlatList
           ListHeaderComponent={this.renderHeader}
           data={state.params.favorites}
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
+          ItemSeparatorComponent={this.renderSeparator}
         />
         {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={state.params.user_id} deleteFavorite={this.deleteFavorite}/> : null}
       </View>
@@ -125,8 +147,10 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     height: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    paddingLeft: 20,
+    paddingRight: 15,
+    width: Dimensions.get('window').width,
+    justifyContent: 'center',
     backgroundColor: '#339966',
     alignItems: 'center'
   },
@@ -134,9 +158,8 @@ const styles = StyleSheet.create({
     fontSize: 19,
     fontWeight: 'bold',
     color: 'white',
-    marginLeft: 9,
-    paddingLeft: 9,
-    paddingRight: 6
+    marginLeft: 0,
+
   },
   row: {
     elevation: 1,
@@ -158,10 +181,10 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     height: 28,
-    paddingRight: 5
+    marginRight: 15
   },
   shoppingCart: {
-    marginLeft: 5
+    marginLeft: 15
   }
 
 });

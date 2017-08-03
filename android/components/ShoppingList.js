@@ -5,9 +5,9 @@ import {Icon} from 'react-native-elements';
 export default class ShoppingList extends React.Component {
   constructor(props) {
     super(props);
-
+    const {state} = this.props.navigation;
     this.state = {
-      listItems: mockData
+      listItems: state.params.shopping_list
     };
     this.deleteItem = this.deleteItem.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -61,6 +61,7 @@ export default class ShoppingList extends React.Component {
   }
 
   render() {
+
     return (
       <View >
         <FlatList
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     height: 50,
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     backgroundColor: '#F89E3A',
     alignItems: 'center'
