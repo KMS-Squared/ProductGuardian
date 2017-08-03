@@ -43,8 +43,8 @@ export default class ProductDetail extends Component {
               cardMaxElevation={0}
               cornerRadius={0}
               style={{backgroundColor: '#FFFFFF'}}>
-            <Text style={styles.title}>{this.props.productInfo.title}</Text>
 
+              <Text style={styles.title}>{this.props.productInfo.title}</Text>
             <Image
               style={{width: winSize.width/2, height: 150, alignSelf: 'center', resizeMode: 'contain', marginBottom: 10}}
               source={{uri: this.props.productInfo.image}}/>
@@ -66,7 +66,7 @@ export default class ProductDetail extends Component {
 
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor:'#FFFFFF',
+    backgroundColor:'#eeeeee',
     justifyContent: 'center',
     overflow: 'visible',
     flex: 1
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginLeft: 20,
     marginRight: 20,
-    marginBottom: 10,
-    marginTop: 20
+    marginBottom: 15,
+    marginTop: 10
   },
   button: {
     width: "80%",
@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 30,
     marginRight: 30,
-    marginTop: 10
+    marginTop: 10,
   }
 });

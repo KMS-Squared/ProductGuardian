@@ -18,9 +18,6 @@ import CardView from 'react-native-cardview'
 import RNRestart from 'react-native-restart';
 
 export default class Profile extends React.Component {
-  static navigationOptions = {
-    title: 'Profile',
-  };
 
   constructor(props) {
     super(props);
@@ -178,7 +175,7 @@ export default class Profile extends React.Component {
         }
         </CardView>
         <View style={styles.avoidableList}>
-          <Text style={{marginBottom: 10, fontSize: 20, alignSelf: 'center'}}>Allergen List</Text>
+          <Text style={{marginBottom: 10, fontSize: 25, alignSelf: 'center'}}>Allergen List</Text>
           <FlatList
             data={this.state.avoidableList || state.params.avoidables}
             renderItem={this.renderItem.bind(this)}
@@ -275,23 +272,19 @@ const styles = StyleSheet.create({
   },
   avoidableList: {
     alignSelf: 'center',
-    paddingLeft: 50,
-    paddingRight: 50,
-    paddingTop: 20,
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 25,
     width: Dimensions.get('window').width,
     backgroundColor: '#ffffff',
-    paddingBottom: 20,
+    paddingBottom: 25,
+    flex: 1,
   },
   swipe: {
     backgroundColor: '#ffffff'
   },
-  title: {
-    fontSize: 30,
-    alignSelf: 'center',
-    marginBottom: 30
-  },
   avoidable: {
-    fontSize: 12,
+    fontSize: 15,
     paddingTop: 10,
     paddingBottom: 10,
     alignSelf: 'center'
