@@ -15,6 +15,7 @@ import {
 import FAIcons from 'react-native-vector-icons/FontAwesome';
 import Swipeout from 'react-native-swipeout';
 import CardView from 'react-native-cardview'
+import RNRestart from 'react-native-restart';
 
 export default class Profile extends React.Component {
   static navigationOptions = {
@@ -63,6 +64,18 @@ export default class Profile extends React.Component {
       }).catch((error) => {console.log('error modifying profile', error)});
     }).catch((error) => {console.log('error saving profile', error)});
     this.props.navigation.goBack();
+  }
+
+  logout () {
+
+    let keys = ['user', 'token'];
+    AsyncStorage.multiRemove(keys)
+    .then(() => {
+      RNRestart.Restart();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   deleteItem(index) {
@@ -184,9 +197,26 @@ export default class Profile extends React.Component {
             <Text style={{fontSize: 20, alignSelf: 'center', justifyContent:'center'}}>+</Text>
             </TouchableHighlight>
           </View>
-          <TouchableHighlight style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
-            <Text style={styles.buttonText}>Save</Text>
-          </TouchableHighlight>
+          <View style={{marginTop: 5}}>
+            <CardView
+                cardElevation={2}
+                cardMaxElevation={1}
+                cornerRadius={10}>
+              <TouchableHighlight style={styles.saveButton} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableHighlight>
+            </CardView>
+          </View>
+          <View style={{marginTop: 10}}>
+            <CardView
+                cardElevation={2}
+                cardMaxElevation={1}
+                cornerRadius={10}>
+              <TouchableHighlight style={styles.logoutButton} onPress={this.logout.bind(this)} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Logout</Text>
+              </TouchableHighlight>
+            </CardView>
+          </View>
 
         </View>
       </ScrollView>
@@ -195,12 +225,6 @@ export default class Profile extends React.Component {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'flex-start',
-    padding: 0,
-    height: Dimensions.get('window').height,
-    backgroundColor: '#ffffff',
-  },
   bgContainer: {
     position: 'absolute',
     top: 0,
@@ -215,45 +239,6 @@ const styles = StyleSheet.create({
   overlay: {
     width: Dimensions.get('window').width,
     height: 250,
-  },
-  avoidableList: {
-    alignSelf: 'center',
-    paddingLeft: 50,
-    paddingRight: 50,
-    paddingTop: 20,
-    width: Dimensions.get('window').width,
-    backgroundColor: '#ffffff',
-    paddingBottom: 20,
-  },
-  swipe: {
-    backgroundColor: '#ffffff'
-  },
-  title: {
-    fontSize: 30,
-    alignSelf: 'center',
-    marginBottom: 30
-  },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 40,
-    backgroundColor: '#339966',
-    borderColor: '#339966',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginTop: 10,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
-  },
-  avoidable: {
-    fontSize: 12,
-    paddingTop: 10,
-    paddingBottom: 10,
-    alignSelf: 'center'
   },
   avatarBG: {
     width: Dimensions.get('window').width,
@@ -287,5 +272,47 @@ const styles = StyleSheet.create({
     fontSize: 30,
     alignSelf: 'center',
     marginTop: 30
+  },
+  avoidableList: {
+    alignSelf: 'center',
+    paddingLeft: 50,
+    paddingRight: 50,
+    paddingTop: 20,
+    width: Dimensions.get('window').width,
+    backgroundColor: '#ffffff',
+    paddingBottom: 20,
+  },
+  swipe: {
+    backgroundColor: '#ffffff'
+  },
+  title: {
+    fontSize: 30,
+    alignSelf: 'center',
+    marginBottom: 30
+  },
+  avoidable: {
+    fontSize: 12,
+    paddingTop: 10,
+    paddingBottom: 10,
+    alignSelf: 'center'
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  saveButton: {
+    height: 50,
+    backgroundColor: '#339966',
+    marginBottom: 8,
+    alignSelf: 'stretch',
+    justifyContent: 'center'
+  },
+  logoutButton: {
+    height: 50,
+    backgroundColor: '#d64c4c',
+    marginBottom: 8,
+    alignSelf: 'stretch',
+    justifyContent: 'center'
   },
 });
