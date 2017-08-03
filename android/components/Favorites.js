@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     justifyContent: 'center',
     backgroundColor: '#339966',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
   headerText: {
     fontSize: 19,

@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import FAIcons from 'react-native-vector-icons/FontAwesome';
 import Swipeout from 'react-native-swipeout';
-import CardView from 'react-native-cardview'
+import CardView from 'react-native-cardview';
 import RNRestart from 'react-native-restart';
 
 export default class Profile extends React.Component {
