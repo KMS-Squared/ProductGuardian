@@ -101,6 +101,8 @@ export default class Favorites extends React.Component {
           height: 2,
           width: Dimensions.get('window').width,
           backgroundColor: "#CED0CE",
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
       />
     );
@@ -145,46 +147,39 @@ export default class Favorites extends React.Component {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    flex: 1,
-    height: 50,
+    height: 70,
     paddingLeft: 20,
-    paddingRight: 15,
     width: Dimensions.get('window').width,
     justifyContent: 'center',
     backgroundColor: '#339966',
-    alignItems: 'center'
+    alignItems: 'flex-start'
   },
   headerText: {
     fontSize: 19,
     fontWeight: 'bold',
     color: 'white',
     marginLeft: 0,
-
+    marginBottom: 10,
   },
   row: {
-    elevation: 1,
     flex: 1,
     flexDirection: 'row', //main axis
     justifyContent: 'space-between',
-    paddingTop: 10
-  },
-  container: {
-    flex: 1,
-    padding: 12,
-    flexDirection: 'row',
+    paddingTop: 10,
+    paddingBottom: 10
   },
   title: {
-    marginLeft: 5,
     fontSize: 16,
-    width: winSize.width * .75,
+    width: winSize.width * .73,
     textAlign: 'left'
   },
   deleteButton: {
     height: 28,
-    marginRight: 15
+    marginRight: 25
   },
   shoppingCart: {
-    marginLeft: 15
+    marginLeft: 20,
+    marginRight: 15
   }
 
 });
