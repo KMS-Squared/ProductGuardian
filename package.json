@@ -18,6 +18,7 @@
     "react-native-cardview": "^1.0.4",
     "react-native-elements": "^0.15.0",
     "react-native-lock": "^0.6.0",
+    "react-native-restart": "0.0.2",
     "react-native-svg": "^5.3.2",
     "react-native-swipeout": "^2.2.1",
     "react-native-vector-icons": "^4.2.0",

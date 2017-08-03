@@ -67,7 +67,15 @@ export default class Profile extends React.Component {
   }
 
   logout () {
-    RNRestart.Restart();
+
+    let keys = ['user', 'token'];
+    AsyncStorage.multiRemove(keys)
+    .then(() => {
+      RNRestart.Restart();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }
 
   deleteItem(index) {
