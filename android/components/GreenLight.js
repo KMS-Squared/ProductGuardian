@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Modal, Text, TouchableHighlight, StyleSheet, View, Button } from 'react-native';
+import CardView from 'react-native-cardview';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default class GreenLight extends Component {
   constructor(props) {
@@ -52,42 +55,131 @@ export default class GreenLight extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => {}}
           >
-          <View style={styles.popup}>
+          <CardView
+            cardElevation={5}
+            cardMaxElevation={0}
+            cornerRadius={25}
+            style={styles.popup}>
 
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, fontWeight: 'bold'}}>Hooray!</Text>
-            <Text style={{color: 'white', textAlign: 'center', fontSize: 20, margin: 25}}>Looks like {this.props.productInfo.title} does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-            <Button
+            <TouchableHighlight
+            style={styles.close}
+            onPress={() => {
+              this.setModalVisible(false);
+              this.props.revertCamera();
+            }}
+            underlayColor='#99d9f4'>
+             <Ionicons name="md-close-circle" style={styles.closeIcon} />
+            </TouchableHighlight>
+
+            <Text style={styles.title}>Hooray!</Text>
+            <Text style={styles.info}>Looks like {this.props.productInfo.title} does not contain any of the allergens you'd like to avoid. Enjoy!</Text>
+            <View style={{flexDirection: 'column', justifyContent: 'center'}}>
+
+            {/*<Button
               color='grey'
               title="Hide Alert"
+              style={styles.button}
               onPress={() => {
                 this.setModalVisible(false);
                 this.props.revertCamera();
               }}
-            />
-          {/*This view creates space between the buttons on this popup*/}
-            <View style={{width: 10}}></View>
-            <Button
-              color='grey'
-              title="Save item to Favorites"
+            />*/}
+            <CardView
+              cardElevation={2}
+              cornerRadius={5}
+              style={styles.buttonCard}>
+            <TouchableHighlight
+              style={styles.button}
               onPress={() => {
                 this.sendToFavorites();
                 console.log('Favorites button clicked');
-            }}/>
+              }}
+              underlayColor='#99d9f4'>
+              <View style={{flexDirection: 'row'}}>
+                <MIcons name="favorite" style={styles.favButton} />
+                <Text style={styles.buttonText}>
+                Save item to Favorites</Text>
+                </View>
+              </TouchableHighlight>
+              </CardView>
+            {/*<Button
+              color='grey'
+              title="Save item to Favorites"
+              style={styles.button}
+              onPress={() => {
+                this.sendToFavorites();
+                console.log('Favorites button clicked');
+            }}/>*/}
             </View>
-         </View>
+         </CardView>
         </Modal>
     );
   }
 }
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor: 'rgba(0,128,0, 0.8)',
-    borderColor: '#d6d7da',
-    borderWidth: 3,
-    borderRadius: 20,
-    justifyContent: 'center',
+    backgroundColor: 'rgba(109, 191, 109, 0.9)',
+    height: "80%",
+    marginTop: "25%",
+    marginBottom: "50%",
+    marginRight: "5%",
+    marginLeft: "5%",
+    justifyContent: 'flex-start',
     overflow: 'visible',
-    flex: 1
+    flex: 1,
+    padding: 20,
+    paddingTop: 40,
+  },
+  title: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  info: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 16,
+    margin: 25
+  },
+  buttonCard: {
+    marginTop: 20,
+    alignSelf: 'center',
+    backgroundColor: '#eeeeee',
+    paddingLeft: 20,
+    paddingRight: 20
+  },
+  button: {
+    backgroundColor: '#eeeeee',
+    paddingTop: 0,
+    marginBottom: 8,
+    height: 40,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontSize: 15,
+    color: '#777777',
+    alignSelf: 'center'
+  },
+  close: {
+    position: 'absolute',
+    right: 20,
+    top: 20,
+    width: 20,
+    height: 20,
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
+  closeIcon: {
+    fontSize: 20,
+    color: '#fff',
+  },
+  favButton: {
+    fontSize: 15,
+    color: '#777777',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    paddingRight: 10
   }
 });
