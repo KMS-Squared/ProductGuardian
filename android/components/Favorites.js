@@ -2,11 +2,11 @@ import React, {component} from 'react';
 import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, AsyncStorage, Dimensions, ScrollView } from 'react-native';
 import {Icon} from 'react-native-elements';
 import ProductDetail from './ProductDetail';
-import CardView from 'react-native-cardview'
-
+import CardView from 'react-native-cardview';
 let winSize = Dimensions.get('window');
 
 export default class Favorites extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -15,11 +15,25 @@ export default class Favorites extends React.Component {
       showProductDetail: false,
       productInfo: {}
     };
+
     this.deleteFavorite = this.deleteFavorite.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.hideProductDetail = this.hideProductDetail.bind(this);
     this.addShoppingList = this.addShoppingList.bind(this);
+  }
+
+  getFavorites () {
+    const {state} = this.props.navigation;
+    return fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/?user_id=${state.params.user_id}`)
+      .then((data) => {
+        return data.json();
+      });
+  }
+
+  updateShoppingList(itemInfo) {
+    this.props.screenProps.shopping_list.push(itemInfo);
+    console.log(this.props.screenProps.shopping_list);
   }
 
   hideProductDetail () {
@@ -36,13 +50,13 @@ export default class Favorites extends React.Component {
             <Text style={styles.headerText}>Favorites</Text>
           </View>
       </CardView>
-
     );
   }
 
-  addShoppingList (item) {
-    console.log('addShoppingList', item);
-    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shoppingList',
+  addShoppingList (product) {
+    const {state} = this.props.navigation;
+    console.log('addShoppingList', product);
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list',
       {
         method: 'POST',
         headers: {
@@ -50,29 +64,28 @@ export default class Favorites extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user_id: this.props.UserId,
-          product_id: this.props.productInfo._id
+          user_id: state.params.user_id,
+          product_id: product._id
         })
       })
     .then((response) => {
       var productData = {
-        user_id: this.props.UserId,
-        title: this.props.productInfo.title,
-        image: this.props.productInfo.image,
-        ingredients: this.props.productInfo.ingredients
+        user_id: state.params.user_id,
+        title: product.title,
+        image: product.image,
+        _id: product._id,
+        ingredients: product.ingredients
       };
-      this.props.updateFavorites(productData);
+      this.updateShoppingList(productData);
       return response.json();
     })
-    .then(() => this.props.revertCamera())
     .catch((error) => {
       console.error(error);
     });
   }
 
-  deleteFavorite(item) {
+  deleteFavorite(product) {
     const {state} = this.props.navigation;
-
     fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites`, {
       method: 'DELETE',
       headers: {
@@ -81,19 +94,19 @@ export default class Favorites extends React.Component {
       },
       body: JSON.stringify({
         user_id: state.params.user_id,
-        _id: item._id
+        product_id: product._id
       })
     })
     .then((response) => response.json())
     .then(() => this.getFavorites())
     .then((returnedFavorites) => {
       state.params.favorites = returnedFavorites;
+      this.setState({favorites: returnedFavorites});
     })
     .catch((error) => {
       console.error(error);
     });
   }
-
   renderSeparator () {
     return (
       <View
@@ -107,7 +120,6 @@ export default class Favorites extends React.Component {
       />
     );
   }
-
   renderItem({item}) {
     const title = `${item.title}`;
     return (
@@ -126,11 +138,9 @@ export default class Favorites extends React.Component {
       </ScrollView>
     );
   }
-
   render() {
     const {state} = this.props.navigation;
     return (
-
       <View>
         <FlatList
           ListHeaderComponent={this.renderHeader}
@@ -144,7 +154,6 @@ export default class Favorites extends React.Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   headerContainer: {
     height: 70,
@@ -152,7 +161,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     justifyContent: 'center',
     backgroundColor: '#339966',
-    alignItems: 'flex-start',
+    alignItems: 'flex-start'
   },
   headerText: {
     fontSize: 19,
@@ -181,5 +190,4 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 15
   }
-
 });

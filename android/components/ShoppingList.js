@@ -1,7 +1,7 @@
 import React, {component} from 'react';
-import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, Dimensions } from 'react-native';
 import {Icon} from 'react-native-elements';
-
+let winSize = Dimensions.get('window');
 export default class ShoppingList extends React.Component {
   constructor(props) {
     super(props);
@@ -12,40 +12,75 @@ export default class ShoppingList extends React.Component {
     this.deleteItem = this.deleteItem.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
+    this.getShoppingList = this.getShoppingList.bind(this);
   }
-
   renderHeader() {
     return (
       <View style={styles.headerContainer}>
         <Text style={styles.headerText}>Shopping List</Text>
-        <Text style={styles.headerText} onPress={() => this.deleteAll()}>Delete All</Text>
+        <Text style={styles.headerText} onPress={() => this.deleteAllItems()}>Delete All</Text>
       </View>
     );
   }
 
   deleteItem (item) {
-        //delete request to server
-      //send item title
-            //server match item title and send back data again
-    //rerender page without item
-    // let title = item.title;
-    // fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shoppingList/' + {title}), {
-    //   method: 'DELETE',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     'Content-Type': 'application/json',
-    //   }
-    // }
-    // .then((response) => response.json())
-    // .then((returnedFavorites) => {
-    //   this.setState({favorites: returnedFavorites});
-    // })
-    // .catch((error) => {
-    //   console.error(error);
-    // });
+    const {state} = this.props.navigation;
+    console.log('delete pressed')
+    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list-item`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: state.params.user_id,
+        product_id: item._id
+      })
+    })
+    .then((response) => response.json())
+    .then(() => this.getShoppingList())
+    .then((returnedListItems) => {
+      console.log(returnedListItems, 'RETURNED LIST ITEMS');
+      state.params.shopping_list = returnedListItems;
+      this.setState({listItems: returnedListItems});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
 
+  deleteAllItems () {
+    const {state} = this.props.navigation;
+    console.log('delete pressed');
+    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: state.params.user_id
+      })
+    })
+    .then((response) => response.json())
+    .then(() => this.getShoppingList())
+    .then((returnedListItems) => {
+      console.log(returnedListItems)
+      state.params.shopping_list = returnedListItems;
+      this.setState({listItems: returnedListItems});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
 
+  getShoppingList () {
+    const {state} = this.props.navigation;
+    return fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list/?user_id=${state.params.user_id}`)
+      .then((data) => {
+        return data.json();
+      });
+  }
 
   renderItem({item}) {
     const title = `${item.title}`;
@@ -59,14 +94,13 @@ export default class ShoppingList extends React.Component {
       </View>
     );
   }
-
   render() {
-
+    const {state} = this.props.navigation;
     return (
       <View >
         <FlatList
           ListHeaderComponent={this.renderHeader}
-          data={this.state.listItems}
+          data={state.params.shopping_list}
           renderItem={this.renderItem}
           keyExtractor={item => item.title}
         />
@@ -74,45 +108,37 @@ export default class ShoppingList extends React.Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   headerContainer: {
-    flex: 1,
-    height: 50,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    backgroundColor: '#F89E3A',
-    alignItems: 'center'
+    height: 70,
+    paddingLeft: 20,
+    width: Dimensions.get('window').width,
+    justifyContent: 'center',
+    backgroundColor: '#339966',
+    alignItems: 'flex-start'
   },
   headerText: {
     fontSize: 19,
     fontWeight: 'bold',
-    color: 'black',
-    marginLeft: 9,
-    paddingLeft: 9,
-    paddingRight: 6
+    color: 'white',
+    marginLeft: 0,
+    marginBottom: 10,
   },
   row: {
-    elevation: 1,
     flex: 1,
     flexDirection: 'row', //main axis
     justifyContent: 'space-between',
-    paddingTop: 10
-  },
-  container: {
-    flex: 1,
-    padding: 12,
-    flexDirection: 'row',
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft: 25
   },
   title: {
-    marginLeft: 9,
-    fontSize: 19,
-    paddingLeft: 5,
+    fontSize: 16,
+    width: winSize.width * .73,
+    textAlign: 'left'
   },
-
   deleteButton: {
     height: 28,
-    paddingRight: 5
+    marginRight: 25
   }
 });
-
