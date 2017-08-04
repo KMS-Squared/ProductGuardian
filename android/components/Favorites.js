@@ -2,6 +2,7 @@ import React, {component} from 'react';
 import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, AsyncStorage, Dimensions, ScrollView } from 'react-native';
 import {Icon} from 'react-native-elements';
 import ProductDetail from './ProductDetail';
+import AddedModal from './AddedModal';
 import CardView from 'react-native-cardview';
 let winSize = Dimensions.get('window');
 
@@ -13,13 +14,15 @@ export default class Favorites extends React.Component {
       favorites: [],
       UserId: '',
       showProductDetail: false,
-      productInfo: {}
+      productInfo: {},
+      showModal: false,
     };
 
     this.deleteFavorite = this.deleteFavorite.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
     this.hideProductDetail = this.hideProductDetail.bind(this);
+    this.hideAddedModal = this.hideAddedModal.bind(this);
     this.addShoppingList = this.addShoppingList.bind(this);
   }
 
@@ -33,23 +36,27 @@ export default class Favorites extends React.Component {
 
   updateShoppingList(itemInfo) {
     this.props.screenProps.shopping_list.push(itemInfo);
-    console.log(this.props.screenProps.shopping_list);
+    this.setState({showModal: true});
   }
 
   hideProductDetail () {
     this.setState({showProductDetail: false});
   }
 
+  hideAddedModal () {
+    this.setState({showModal: false});
+  }
+
   renderHeader () {
     return (
       <CardView
-          cardElevation={5}
-          cardMaxElevation={3}
-          cornerRadius={0}
-          style={styles.headerTab}>
-          <View style={styles.headerContainer}>
-            <Text style={styles.headerText}>Favorites</Text>
-          </View>
+        cardElevation={5}
+        cardMaxElevation={3}
+        cornerRadius={0}
+        style={styles.headerTab}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Favorites</Text>
+        </View>
       </CardView>
     );
   }
@@ -147,6 +154,7 @@ export default class Favorites extends React.Component {
           ItemSeparatorComponent={this.renderSeparator}
         />
         {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={state.params.user_id} deleteFavorite={this.deleteFavorite}/> : null}
+        {this.state.showModal ? <AddedModal hideAddedModal={this.hideAddedModal} info={"Shopping List"}/> : null}
       </View>
     );
   }
