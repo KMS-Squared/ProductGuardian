@@ -13,6 +13,14 @@ import _ from 'lodash';
 import Warning from './Warning';
 import GreenLight from './GreenLight';
 import ProductNotFound from './ProductNotFound';
+import Profile from './Profile';
+import Favorites from './Favorites';
+import Shopping from './ShoppingList';
+import ActionButton from 'react-native-action-button';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FAIcons from 'react-native-vector-icons/FontAwesome';
+import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default class BarcodeScanner extends Component {
   constructor(props) {
@@ -86,6 +94,8 @@ export default class BarcodeScanner extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
+
     return (
       <View style={styles.container}>
         <Camera
@@ -100,6 +110,22 @@ export default class BarcodeScanner extends Component {
         {this.state.showWarning ? <Warning productInfo={this.state.productInfo} avoidables={this.state.foundAvoidables} revertCamera={this.hideWarning} style={styles.popup}/> : null}
         {this.state.showGreenLight ? <GreenLight UserId={this.props.screenProps.user_id} productInfo={this.state.productInfo} revertCamera={this.hideGreenLight} updateFavorites={this.updateFavorites} style={styles.popup}/> : null}
         {this.state.showProductNotFound ? <ProductNotFound productInfo={this.state.productInfo} revertCamera={this.hideProductNotFound} style={styles.popup}/> : null}
+
+        <ActionButton buttonColor="rgba(237,126,2,1)"
+            icon={<Ionicons name="md-more" style={styles.actionButtonIcon} />}
+            offsetX={15}
+            offsetY={10}
+            degrees={90}>
+            <ActionButton.Item buttonColor='#127cc3' title="Profile" textStyle={{fontSize: 13}} onPress={() => {navigate('Profile', this.props.screenProps)}}>
+              <FAIcons name="user" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item buttonColor='#db3915' title="Favorites" textStyle={{fontSize: 13}} onPress={() => navigate('Favorites', this.props.screenProps)}>
+              <MIcons name="favorite" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            <ActionButton.Item buttonColor='#339933' title="Shopping List" textStyle={{fontSize: 13}}onPress={() => navigate('Shopping', this.props.screenProps)}>
+              <FAIcons name="shopping-cart" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+          </ActionButton>
       </View>
     );
   }
@@ -128,5 +154,10 @@ const styles = StyleSheet.create({
   popup: {
     alignSelf: 'center',
     aspectRatio: 75
-  }
+  },
+  actionButtonIcon: {
+    fontSize: 20,
+    height: 22,
+    color: 'white',
+  },
 });
