@@ -46,7 +46,7 @@ export default class Favorites extends React.Component {
           cardElevation={5}
           cardMaxElevation={3}
           cornerRadius={0}
-          style={{width: "120%", left: -7, top: -10, backgroundColor: '#339966'  }}>
+          style={styles.headerTab}>
           <View style={styles.headerContainer}>
             <Text style={styles.headerText}>Favorites</Text>
           </View>
@@ -87,7 +87,7 @@ export default class Favorites extends React.Component {
 
   deleteFavorite(product) {
     const {state} = this.props.navigation;
-    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites`, {
+    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorite`, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
@@ -108,19 +108,15 @@ export default class Favorites extends React.Component {
       console.error(error);
     });
   }
+
   renderSeparator () {
     return (
       <View
-        style={{
-          height: 2,
-          width: Dimensions.get('window').width,
-          backgroundColor: "#CED0CE",
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
+        style={styles.listSeparator}
       />
     );
   }
+
   renderItem({item}) {
     const title = `${item.title}`;
     return (
@@ -164,8 +160,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#339966',
     alignItems: 'flex-start'
   },
+  headerTab: {
+    width: "120%",
+    left: -7,
+    top: -10,
+    backgroundColor: '#339966'
+  },
   headerText: {
-    fontSize: 19,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'white',
     marginLeft: 0,
@@ -178,8 +180,15 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10
   },
+  listSeparator: {
+    height: 2,
+    width: Dimensions.get('window').width,
+    backgroundColor: "#CED0CE",
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   title: {
-    fontSize: 16,
+    fontSize: 15,
     width: winSize.width * .73,
     textAlign: 'left'
   },
