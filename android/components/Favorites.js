@@ -1,13 +1,22 @@
-import React, {component} from 'react';
-import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, AsyncStorage, Dimensions, ScrollView } from 'react-native';
-import {Icon} from 'react-native-elements';
+import React, { component } from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Button,
+  FlatList,
+  TouchableHighlight,
+  AsyncStorage,
+  Dimensions,
+  ScrollView
+} from 'react-native';
+import { Icon } from 'react-native-elements';
 import ProductDetail from './ProductDetail';
 import AddedModal from './AddedModal';
 import CardView from 'react-native-cardview';
 let winSize = Dimensions.get('window');
 
 export default class Favorites extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +24,7 @@ export default class Favorites extends React.Component {
       UserId: '',
       showProductDetail: false,
       productInfo: {},
-      showModal: false,
+      showModal: false
     };
 
     this.deleteFavorite = this.deleteFavorite.bind(this);
@@ -26,34 +35,31 @@ export default class Favorites extends React.Component {
     this.addShoppingList = this.addShoppingList.bind(this);
   }
 
-  getFavorites () {
-    const {state} = this.props.navigation;
-    return fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/?user_id=${state.params.user_id}`)
-      .then((data) => {
-        return data.json();
-      });
+  getFavorites() {
+    const { state } = this.props.navigation;
+    return fetch(
+      `http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorites/?user_id=${state.params.user_id}`
+    ).then(data => {
+      return data.json();
+    });
   }
 
   updateShoppingList(itemInfo) {
     this.props.screenProps.shopping_list.push(itemInfo);
-    this.setState({showModal: true});
+    this.setState({ showModal: true });
   }
 
-  hideProductDetail () {
-    this.setState({showProductDetail: false});
+  hideProductDetail() {
+    this.setState({ showProductDetail: false });
   }
 
-  hideAddedModal () {
-    this.setState({showModal: false});
+  hideAddedModal() {
+    this.setState({ showModal: false });
   }
 
-  renderHeader () {
+  renderHeader() {
     return (
-      <CardView
-        cardElevation={5}
-        cardMaxElevation={3}
-        cornerRadius={0}
-        style={styles.headerTab}>
+      <CardView cardElevation={5} cardMaxElevation={3} cornerRadius={0} style={styles.headerTab}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Favorites</Text>
         </View>
@@ -61,89 +67,94 @@ export default class Favorites extends React.Component {
     );
   }
 
-  addShoppingList (product) {
-    const {state} = this.props.navigation;
+  addShoppingList(product) {
+    const { state } = this.props.navigation;
     console.log('addShoppingList', product);
-    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list',
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: state.params.user_id,
-          product_id: product._id
-        })
-      })
-    .then((response) => {
-      var productData = {
-        user_id: state.params.user_id,
-        title: product.title,
-        image: product.image,
-        _id: product._id,
-        ingredients: product.ingredients
-      };
-      this.updateShoppingList(productData);
-      return response.json();
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
-
-  deleteFavorite(product) {
-    const {state} = this.props.navigation;
-    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorite`, {
-      method: 'DELETE',
+    fetch('http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list', {
+      method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         user_id: state.params.user_id,
         product_id: product._id
       })
     })
-    .then((response) => response.json())
-    .then(() => this.getFavorites())
-    .then((returnedFavorites) => {
-      state.params.favorites = returnedFavorites;
-      this.setState({favorites: returnedFavorites});
+      .then(response => {
+        var productData = {
+          user_id: state.params.user_id,
+          title: product.title,
+          image: product.image,
+          _id: product._id,
+          ingredients: product.ingredients
+        };
+        this.updateShoppingList(productData);
+        return response.json();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+  deleteFavorite(product) {
+    const { state } = this.props.navigation;
+    fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/favorite`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: state.params.user_id,
+        product_id: product._id
+      })
     })
-    .catch((error) => {
-      console.error(error);
-    });
+      .then(response => response.json())
+      .then(() => this.getFavorites())
+      .then(returnedFavorites => {
+        state.params.favorites = returnedFavorites;
+        this.setState({ favorites: returnedFavorites });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
-  renderSeparator () {
-    return (
-      <View
-        style={styles.listSeparator}
-      />
-    );
+  renderSeparator() {
+    return <View style={styles.listSeparator} />;
   }
 
-  renderItem({item}) {
+  renderItem({ item }) {
     const title = `${item.title}`;
     return (
       <ScrollView>
-      <View style={styles.row}>
-        <View>
-          <Icon name='add-shopping-cart' color='#339966' style={styles.shoppingCart} onPress={() => this.addShoppingList(item)}/>
+        <View style={styles.row}>
+          <View>
+            <Icon
+              name="add-shopping-cart"
+              color="#339966"
+              style={styles.shoppingCart}
+              onPress={() => this.addShoppingList(item)}
+            />
+          </View>
+          <TouchableHighlight onPress={() => this.setState({ showProductDetail: true, productInfo: item })}>
+            <Text style={styles.title}>{title}</Text>
+          </TouchableHighlight>
+          <View>
+            <Icon
+              color="#F89E3A"
+              name="delete-forever"
+              style={styles.deleteButton}
+              onPress={() => this.deleteFavorite(item)}
+            />
+          </View>
         </View>
-        <TouchableHighlight onPress={() => this.setState({showProductDetail: true, productInfo: item})}>
-          <Text style={styles.title}>{title}</Text>
-        </TouchableHighlight>
-        <View>
-          <Icon color='#F89E3A' name='delete-forever' style={styles.deleteButton} onPress={() => this.deleteFavorite(item)}/>
-        </View>
-      </View>
       </ScrollView>
     );
   }
   render() {
-    const {state} = this.props.navigation;
+    const { state } = this.props.navigation;
     return (
       <View>
         <FlatList
@@ -153,8 +164,15 @@ export default class Favorites extends React.Component {
           keyExtractor={item => item.title}
           ItemSeparatorComponent={this.renderSeparator}
         />
-        {this.state.showProductDetail ? <ProductDetail hideProductDetail={this.hideProductDetail} productInfo={this.state.productInfo} UserId={state.params.user_id} deleteFavorite={this.deleteFavorite}/> : null}
-        {this.state.showModal ? <AddedModal hideAddedModal={this.hideAddedModal} info={"Shopping List"}/> : null}
+        {this.state.showProductDetail ? (
+          <ProductDetail
+            hideProductDetail={this.hideProductDetail}
+            productInfo={this.state.productInfo}
+            UserId={state.params.user_id}
+            deleteFavorite={this.deleteFavorite}
+          />
+        ) : null}
+        {this.state.showModal ? <AddedModal hideAddedModal={this.hideAddedModal} info={'Shopping List'} /> : null}
       </View>
     );
   }
@@ -169,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start'
   },
   headerTab: {
-    width: "120%",
+    width: '120%',
     left: -7,
     top: -10,
     backgroundColor: '#339966'
@@ -179,7 +197,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginLeft: 0,
-    marginBottom: 10,
+    marginBottom: 10
   },
   row: {
     flex: 1,
@@ -191,13 +209,13 @@ const styles = StyleSheet.create({
   listSeparator: {
     height: 2,
     width: Dimensions.get('window').width,
-    backgroundColor: "#CED0CE",
+    backgroundColor: '#CED0CE',
     alignItems: 'center',
     justifyContent: 'center'
   },
   title: {
     fontSize: 15,
-    width: winSize.width * .73,
+    width: winSize.width * 0.73,
     textAlign: 'left'
   },
   deleteButton: {

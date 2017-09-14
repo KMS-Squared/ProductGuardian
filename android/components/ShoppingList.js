@@ -1,6 +1,6 @@
-import React, {component} from 'react';
+import React, { component } from 'react';
 import { View, StyleSheet, Text, Button, FlatList, TouchableHighlight, Dimensions, ScrollView } from 'react-native';
-import {Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import MIcons from 'react-native-vector-icons/MaterialIcons';
 import CardView from 'react-native-cardview';
 
@@ -9,10 +9,10 @@ let winSize = Dimensions.get('window');
 export default class ShoppingList extends React.Component {
   constructor(props) {
     super(props);
-    const {state} = this.props.navigation;
+    const { state } = this.props.navigation;
     this.state = {
       listItems: state.params.shopping_list,
-      showFavorites: false,
+      showFavorites: false
     };
     this.deleteItem = this.deleteItem.bind(this);
     this.renderItem = this.renderItem.bind(this);
@@ -21,11 +21,7 @@ export default class ShoppingList extends React.Component {
   }
   renderHeader() {
     return (
-     <CardView
-        cardElevation={5}
-        cardMaxElevation={3}
-        cornerRadius={0}
-        style={styles.headerTab}>
+      <CardView cardElevation={5} cardMaxElevation={3} cornerRadius={0} style={styles.headerTab}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>Shopping List</Text>
         </View>
@@ -33,89 +29,89 @@ export default class ShoppingList extends React.Component {
     );
   }
 
-  deleteItem (item) {
-    const {state} = this.props.navigation;
-    console.log('delete pressed')
+  deleteItem(item) {
+    const { state } = this.props.navigation;
+    console.log('delete pressed');
     fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list-item`, {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         user_id: state.params.user_id,
         product_id: item._id
       })
     })
-    .then((response) => response.json())
-    .then(() => this.getShoppingList())
-    .then((returnedListItems) => {
-      console.log(returnedListItems, 'RETURNED LIST ITEMS');
-      state.params.shopping_list = returnedListItems;
-      this.setState({listItems: returnedListItems});
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+      .then(response => response.json())
+      .then(() => this.getShoppingList())
+      .then(returnedListItems => {
+        console.log(returnedListItems, 'RETURNED LIST ITEMS');
+        state.params.shopping_list = returnedListItems;
+        this.setState({ listItems: returnedListItems });
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
-  deleteAllItems () {
-    const {state} = this.props.navigation;
+  deleteAllItems() {
+    const { state } = this.props.navigation;
     console.log('delete pressed');
     fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list`, {
       method: 'DELETE',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         user_id: state.params.user_id
       })
     })
-    .then((response) => response.json())
-    .then(() => this.getShoppingList())
-    .then((returnedListItems) => {
-      console.log(returnedListItems)
-      state.params.shopping_list = returnedListItems;
-      this.setState({listItems: returnedListItems});
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
-
-  getShoppingList () {
-    const {state} = this.props.navigation;
-    return fetch(`http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list/?user_id=${state.params.user_id}`)
-      .then((data) => {
-        return data.json();
+      .then(response => response.json())
+      .then(() => this.getShoppingList())
+      .then(returnedListItems => {
+        console.log(returnedListItems);
+        state.params.shopping_list = returnedListItems;
+        this.setState({ listItems: returnedListItems });
+      })
+      .catch(error => {
+        console.error(error);
       });
   }
 
-  renderSeparator () {
-    return (
-      <View
-        style={styles.listSeparator}
-      />
-    );
+  getShoppingList() {
+    const { state } = this.props.navigation;
+    return fetch(
+      `http://ec2-13-59-228-147.us-east-2.compute.amazonaws.com:8080/shopping-list/?user_id=${state.params.user_id}`
+    ).then(data => {
+      return data.json();
+    });
   }
 
-  renderItem({item}) {
-    const title = `${item.title}`;
-//    const {iconName, iconColor} = item.icon;
-    return (
+  renderSeparator() {
+    return <View style={styles.listSeparator} />;
+  }
 
+  renderItem({ item }) {
+    const title = `${item.title}`;
+    //    const {iconName, iconColor} = item.icon;
+    return (
       <View style={styles.row}>
-          <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{title}</Text>
         <View>
-          <Icon color='#F89E3A' name='delete-forever' style={styles.deleteButton} onPress={() => this.deleteItem(item)}/>
+          <Icon
+            color="#F89E3A"
+            name="delete-forever"
+            style={styles.deleteButton}
+            onPress={() => this.deleteItem(item)}
+          />
         </View>
       </View>
-
     );
   }
   render() {
-    const {state} = this.props.navigation;
+    const { state } = this.props.navigation;
     return (
       <ScrollView>
         <FlatList
@@ -126,19 +122,15 @@ export default class ShoppingList extends React.Component {
           ItemSeparatorComponent={this.renderSeparator}
         />
 
-        <CardView
-            cardElevation={2}
-            cardMaxElevation={1}
-            cornerRadius={10}
-             style={styles.deleteCard}>
+        <CardView cardElevation={2} cardMaxElevation={1} cornerRadius={10} style={styles.deleteCard}>
           <TouchableHighlight
             style={styles.deleteAllButton}
-            onPress={() => this.deleteAllItems() }
-            underlayColor='#99d9f4'>
+            onPress={() => this.deleteAllItems()}
+            underlayColor="#99d9f4"
+          >
             <Text style={styles.buttonText}>Clear shopping list</Text>
           </TouchableHighlight>
         </CardView>
-
       </ScrollView>
     );
   }
@@ -153,10 +145,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#339966',
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   headerTab: {
-    width: "120%",
+    width: '120%',
     left: -7,
     top: -10,
     backgroundColor: '#339966',
@@ -167,7 +159,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginLeft: 0,
-    marginBottom: 10,
+    marginBottom: 10
   },
   row: {
     flex: 1,
@@ -180,13 +172,13 @@ const styles = StyleSheet.create({
   listSeparator: {
     height: 2,
     width: Dimensions.get('window').width,
-    backgroundColor: "#CED0CE",
+    backgroundColor: '#CED0CE',
     alignItems: 'center',
     justifyContent: 'center'
   },
   title: {
     fontSize: 15,
-    width: winSize.width * .73,
+    width: winSize.width * 0.73,
     textAlign: 'left'
   },
   deleteButton: {
@@ -201,7 +193,7 @@ const styles = StyleSheet.create({
   },
   favCard: {
     marginTop: 20,
-    marginBottom : 20,
+    marginBottom: 20,
     marginLeft: 50,
     marginRight: 50,
     justifyContent: 'center'
@@ -237,5 +229,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     alignSelf: 'center',
     paddingRight: 10
-  },
+  }
 });
