@@ -12,61 +12,57 @@ export default class Warning extends Component {
   }
 
   setModalVisible(bool) {
-    this.setState({modalVisible: bool});
+    this.setState({ modalVisible: bool });
   }
 
   render() {
     return (
-        <Modal
-          animationType={"slide"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {console.log('modal closed')}}>
-         <CardView
-          cardElevation={5}
-          cardMaxElevation={0}
-          cornerRadius={25}
-          style={styles.popup}>
-
+      <Modal
+        animationType={'slide'}
+        transparent={true}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {
+          console.log('modal closed');
+        }}
+      >
+        <CardView cardElevation={5} cardMaxElevation={0} cornerRadius={25} style={styles.popup}>
           <TouchableHighlight
             style={styles.close}
             onPress={() => {
               this.setModalVisible(false);
               this.props.revertCamera();
             }}
-            underlayColor='#99d9f4'>
-             <Ionicons name="md-close-circle" style={styles.closeIcon} />
+            underlayColor="#99d9f4"
+          >
+            <Ionicons name="md-close-circle" style={styles.closeIcon} />
           </TouchableHighlight>
 
           <Text style={styles.title}>Warning!</Text>
-          <Text style={styles.info}>{this.props.productInfo.title} contains ingredients that you may want to avoid, including: </Text>
+          <Text style={styles.info}>
+            {this.props.productInfo.title} contains ingredients that you may want to avoid, including:{' '}
+          </Text>
           <View>
-            <FlatList
-              data={this.props.avoidables}
-              renderItem={({item}) =>
-              <Text style={styles.list}>{item}</Text>}
-            />
+            <FlatList data={this.props.avoidables} renderItem={({ item }) => <Text style={styles.list}>{item}</Text>} />
           </View>
-
-         </CardView>
-        </Modal>
+        </CardView>
+      </Modal>
     );
   }
 }
 
 const styles = StyleSheet.create({
   popup: {
-    backgroundColor:'rgba(198,81,81,0.9)',
-    height: "80%",
-    marginTop: "25%",
-    marginBottom: "30%",
-    marginRight: "5%",
-    marginLeft: "5%",
+    backgroundColor: 'rgba(198,81,81,0.9)',
+    height: '80%',
+    marginTop: '25%',
+    marginBottom: '30%',
+    marginRight: '5%',
+    marginLeft: '5%',
     justifyContent: 'flex-start',
     overflow: 'visible',
     flex: 1,
     padding: 20,
-    paddingTop: 40,
+    paddingTop: 40
   },
   title: {
     color: 'white',
@@ -97,6 +93,6 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     fontSize: 20,
-    color: '#fff',
-  },
+    color: '#fff'
+  }
 });
